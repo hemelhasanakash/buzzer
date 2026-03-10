@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Online Stage Buzzer</title>
+    <title>Ultimate Stage Buzzer</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Orbitron Font -->
@@ -85,21 +85,21 @@
     <!-- MOTHER UI (LANDING SCREEN)                 -->
     <!-- ========================================== -->
     <div id="landing-screen" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-90 px-6 backdrop-blur-sm transition-opacity duration-500">
-        <h1 class="text-4xl md:text-6xl font-black text-white mb-12 tracking-widest text-center" style="text-shadow: 0 0 20px rgba(255,255,255,0.5);">STAGE BUZZER</h1>
+        <h1 class="text-4xl md:text-7xl font-black text-white mb-8 md:mb-12 tracking-widest text-center" style="text-shadow: 0 0 20px rgba(255,255,255,0.5);">STAGE BUZZER</h1>
         
-        <div id="landing-buttons" class="flex flex-col md:flex-row gap-6 w-full max-w-3xl">
+        <div id="landing-buttons" class="flex flex-col md:flex-row gap-6 md:gap-10 w-full max-w-4xl">
             <!-- Host Button -->
-            <button onclick="startHostMode()" class="flex-1 bg-cyan-950 bg-opacity-40 border-2 border-cyan-700 hover:bg-cyan-900 hover:border-cyan-400 rounded-3xl p-8 flex flex-col items-center gap-4 transition-all shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)] group">
-                <span class="text-6xl group-hover:scale-110 transition-transform">💻</span>
-                <span class="text-2xl font-black tracking-widest text-cyan-400">HOST A QUIZ</span>
-                <span class="text-xs font-mono text-cyan-200 opacity-70 text-center">Create a quiz and display the main stage screen.</span>
+            <button onclick="startHostMode()" class="flex-1 bg-cyan-950 bg-opacity-40 border-2 border-cyan-700 hover:bg-cyan-900 hover:border-cyan-400 rounded-3xl p-6 md:p-10 flex flex-col items-center gap-4 transition-all shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)] group transform hover:-translate-y-2">
+                <span class="text-5xl md:text-7xl group-hover:scale-110 transition-transform">💻</span>
+                <span class="text-xl md:text-3xl font-black tracking-widest text-cyan-400">HOST A QUIZ</span>
+                <span class="text-xs md:text-sm font-mono text-cyan-200 opacity-70 text-center">Create a quiz and display the main stage screen.</span>
             </button>
 
             <!-- Participant Button -->
-            <button onclick="startParticipantMode()" class="flex-1 bg-purple-950 bg-opacity-40 border-2 border-purple-700 hover:bg-purple-900 hover:border-purple-400 rounded-3xl p-8 flex flex-col items-center gap-4 transition-all shadow-[0_0_20px_rgba(168,85,247,0.2)] hover:shadow-[0_0_40px_rgba(168,85,247,0.5)] group">
-                <span class="text-6xl group-hover:scale-110 transition-transform">📱</span>
-                <span class="text-lg md:text-xl font-black tracking-widest text-purple-400 text-center">JOIN AS PARTICIPANT/TEAM</span>
-                <span class="text-xs font-mono text-purple-200 opacity-70 text-center">Connect your phone to a host quiz as a buzzer.</span>
+            <button onclick="startParticipantMode()" class="flex-1 bg-purple-950 bg-opacity-40 border-2 border-purple-700 hover:bg-purple-900 hover:border-purple-400 rounded-3xl p-6 md:p-10 flex flex-col items-center gap-4 transition-all shadow-[0_0_20px_rgba(168,85,247,0.2)] hover:shadow-[0_0_40px_rgba(168,85,247,0.5)] group transform hover:-translate-y-2">
+                <span class="text-5xl md:text-7xl group-hover:scale-110 transition-transform">📱</span>
+                <span class="text-lg md:text-2xl font-black tracking-widest text-purple-400 text-center">JOIN AS TEAM</span>
+                <span class="text-xs md:text-sm font-mono text-purple-200 opacity-70 text-center">Connect your phone to a host quiz as a buzzer.</span>
             </button>
         </div>
         
@@ -114,35 +114,35 @@
     <div id="host-screen" class="hidden flex-col h-full w-full relative z-0">
         
         <!-- Network Dashboard Modal -->
-        <div id="network-modal" class="fixed inset-0 z-50 bg-black bg-opacity-95 hidden flex-col items-center justify-center backdrop-blur-md px-4">
-            <div class="bg-gray-900 border border-gray-700 p-4 md:p-6 rounded-2xl w-full max-w-4xl shadow-2xl">
-                <div class="flex justify-between items-center mb-4 md:mb-6 border-b border-gray-700 pb-4">
-                    <h2 class="text-xl md:text-2xl font-black text-cyan-400 tracking-widest">HOST DASHBOARD</h2>
-                    <button onclick="closeNetwork()" class="text-red-500 font-bold hover:text-red-400">CLOSE [X]</button>
+        <div id="network-modal" class="fixed inset-0 z-50 bg-black bg-opacity-95 hidden flex-col items-center justify-center backdrop-blur-md md:px-4">
+            <div class="bg-gray-900 border-0 md:border border-gray-700 p-4 md:p-8 rounded-none md:rounded-3xl w-full h-full md:h-auto md:max-h-[90vh] md:max-w-5xl shadow-2xl flex flex-col">
+                <div class="flex justify-between items-center mb-4 md:mb-6 border-b border-gray-700 pb-4 shrink-0">
+                    <h2 class="text-xl md:text-3xl font-black text-cyan-400 tracking-widest">HOST DASHBOARD</h2>
+                    <button onclick="closeNetwork()" class="text-red-500 font-bold hover:text-red-400 text-sm md:text-lg">CLOSE [X]</button>
                 </div>
                 
-                <div class="flex flex-col md:flex-row justify-between items-center bg-black p-4 rounded-xl border border-gray-800 mb-4 gap-4">
+                <div class="flex flex-col md:flex-row justify-between items-center bg-black p-4 md:p-6 rounded-xl border border-gray-800 mb-4 gap-4 shrink-0">
                     <div class="text-center md:text-left">
-                        <p class="text-gray-500 text-[10px] md:text-xs tracking-widest mb-1">PARTICIPANTS JOIN USING THIS CODE:</p>
-                        <p id="room-code-display" class="text-3xl md:text-5xl font-black text-white tracking-[0.2em] animate-pulse">...</p>
+                        <p class="text-gray-500 text-[10px] md:text-sm tracking-widest mb-1">PARTICIPANTS JOIN USING THIS CODE:</p>
+                        <p id="room-code-display" class="text-4xl md:text-6xl font-black text-white tracking-[0.2em] animate-pulse">...</p>
                     </div>
-                    <div class="flex flex-col items-end gap-2">
+                    <div class="flex flex-col items-center md:items-end gap-3 md:gap-4 w-full md:w-auto">
                         <div class="flex items-center gap-3">
-                            <label class="text-[10px] md:text-xs text-gray-400 tracking-widest">COOLDOWN (SEC):</label>
-                            <input type="number" id="host-cooldown" value="5" min="0" onchange="updateCooldown()" class="w-16 bg-gray-900 border border-gray-700 rounded text-white text-center font-bold px-2 py-1 outline-none focus:border-cyan-500">
+                            <label class="text-[10px] md:text-sm text-gray-400 tracking-widest">COOLDOWN (SEC):</label>
+                            <input type="number" id="host-cooldown" value="5" min="0" onchange="updateCooldown()" class="w-16 md:w-20 bg-gray-900 border border-gray-700 rounded-lg text-white text-center font-bold px-2 py-1 outline-none focus:border-cyan-500 text-lg">
                         </div>
-                        <button onclick="endHostSession()" class="px-4 py-2 bg-red-950 bg-opacity-40 border border-red-900 text-red-400 rounded-lg text-[10px] md:text-xs font-bold tracking-widest hover:bg-red-900 hover:text-white transition-colors">END QUIZ & EXIT</button>
+                        <button onclick="endHostSession()" class="w-full md:w-auto px-6 py-3 bg-red-950 bg-opacity-40 border border-red-900 text-red-400 rounded-xl text-xs md:text-sm font-bold tracking-widest hover:bg-red-900 hover:text-white transition-colors">END QUIZ & EXIT</button>
                     </div>
                 </div>
 
-                <div class="max-h-[40vh] md:max-h-[50vh] overflow-y-auto pr-2">
+                <div class="flex-1 overflow-y-auto pr-2 rounded-lg bg-black bg-opacity-30 border border-gray-800">
                     <table class="w-full text-left">
-                        <thead>
+                        <thead class="sticky top-0 bg-gray-900 z-10">
                             <tr class="text-gray-500 text-[10px] md:text-xs tracking-widest border-b border-gray-800">
-                                <th class="pb-2">SLOT</th>
-                                <th class="pb-2">TEAM NAME</th>
-                                <th class="pb-2 hidden md:table-cell">STATUS</th>
-                                <th class="pb-2 text-right">ACTIONS</th>
+                                <th class="p-3">SLOT</th>
+                                <th class="p-3">TEAM NAME</th>
+                                <th class="p-3 hidden sm:table-cell">STATUS</th>
+                                <th class="p-3 text-right">ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody id="participant-list" class="text-xs md:text-sm">
@@ -166,52 +166,48 @@
         </header>
 
         <!-- Host Main Content Area -->
-        <main class="flex-1 flex flex-col w-full items-center justify-center px-2 md:px-8 py-2 md:py-6 gap-2 md:gap-4 relative overflow-hidden">
+        <main class="flex-1 flex flex-col w-full items-center justify-center px-2 md:px-8 py-2 md:py-6 gap-2 md:gap-6 relative overflow-hidden">
             
-            <div class="flex-1 flex flex-row flex-wrap md:flex-nowrap w-full max-w-7xl items-center justify-center gap-2 md:gap-6 min-h-0">
+            <div class="flex-1 flex flex-row flex-wrap md:flex-nowrap w-full max-w-[100rem] items-stretch justify-center gap-2 md:gap-8 min-h-0">
                 <!-- Main Spotlight Card -->
-                <div id="main-card" class="order-1 md:order-2 w-full md:flex-1 md:min-w-[40%] md:max-w-[70%] h-[40vh] md:h-[100%] max-h-[95%] flex flex-col items-center justify-center rounded-[2rem] md:rounded-[3rem] transition-all duration-300 relative overflow-hidden border-2 border-dashed border-gray-800 bg-black bg-opacity-50 spotlight-active px-4">
+                <div id="main-card" class="order-1 md:order-2 w-full md:w-[50%] lg:w-[55%] h-[40vh] md:h-full flex flex-col items-center justify-center rounded-[2rem] md:rounded-[3rem] transition-all duration-300 relative overflow-hidden border-2 border-dashed border-gray-800 bg-black bg-opacity-50 spotlight-active px-4 shadow-2xl">
                     <div class="text-3xl md:text-5xl font-bold tracking-widest mb-4 text-gray-600 text-center">AWAITING CONNECTIONS</div>
                 </div>
 
                 <!-- Previous Card -->
-                <div id="prev-card" class="order-2 md:order-1 w-[48%] md:w-auto md:flex-[0.4] md:min-w-[15%] md:max-w-[25%] h-[18vh] md:h-[65%] px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl hide-card"></div>
+                <div id="prev-card" class="order-2 md:order-1 w-[48%] md:w-[22%] lg:w-[20%] h-[18vh] md:h-[70%] md:my-auto px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl hide-card transition-all duration-500"></div>
 
                 <!-- Next Card -->
-                <div id="next-card" class="order-3 md:order-3 w-[48%] md:w-auto md:flex-[0.4] md:min-w-[15%] md:max-w-[25%] h-[18vh] md:h-[65%] px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl hide-card"></div>
+                <div id="next-card" class="order-3 md:order-3 w-[48%] md:w-[22%] lg:w-[20%] h-[18vh] md:h-[70%] md:my-auto px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl hide-card transition-all duration-500"></div>
             </div>
 
             <!-- Full Queue List -->
-            <div class="w-full max-w-5xl flex-shrink-0 bg-black bg-opacity-60 border border-gray-800 rounded-xl md:rounded-2xl p-2 md:p-3 flex flex-col items-center gap-1 md:gap-2 mb-1">
+            <div class="w-full max-w-6xl flex-shrink-0 bg-black bg-opacity-60 border border-gray-800 rounded-xl md:rounded-2xl p-2 md:p-4 flex flex-col items-center gap-1 md:gap-2 mb-1">
                 <div class="text-[10px] md:text-xs text-gray-500 tracking-[0.3em] uppercase font-bold">Live Queue</div>
-                <div id="queue-list" class="flex gap-2 md:gap-4 items-center justify-center min-h-[3rem] md:min-h-[4rem] w-full overflow-x-auto px-2 py-1">
+                <div id="queue-list" class="flex gap-2 md:gap-6 items-center justify-center min-h-[3rem] md:min-h-[5rem] w-full overflow-x-auto px-2 py-1">
                     <span class="text-gray-700 font-mono tracking-widest text-xs md:text-sm">EMPTY</span>
                 </div>
             </div>
         </main>
 
         <!-- Host Footer Controls -->
-        <footer class="w-full px-2 md:px-8 py-3 flex flex-wrap justify-center md:justify-between items-center bg-black bg-opacity-90 border-t border-gray-900 z-10 gap-y-2 md:gap-0">
-            <!-- Lock & Reset -->
-            <div class="flex items-center gap-2 w-full md:w-auto justify-center order-1 md:order-2">
-                <button id="lock-btn" onclick="toggleLock()" class="flex-1 md:flex-none h-12 md:h-14 px-2 md:px-8 flex items-center justify-center bg-red-950 bg-opacity-30 text-red-500 border border-red-800 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase">
-                    🔒 LOCKED
-                </button>
-                <button onclick="resetQueue()" class="flex-1 md:flex-none h-12 md:h-14 px-2 md:px-10 flex items-center justify-center bg-cyan-950 bg-opacity-30 text-cyan-400 border border-cyan-800 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase">
-                    RESET (ESC)
-                </button>
-            </div>
-
-            <!-- Navigation -->
-            <div class="flex items-center justify-between w-full md:w-auto order-2 md:order-1 gap-2 md:gap-0">
-                <button onclick="goPrev()" class="flex-1 md:flex-none h-10 md:h-14 px-4 md:px-8 flex items-center justify-center bg-gray-900 bg-opacity-50 text-gray-400 font-bold text-xs md:text-lg rounded-lg md:rounded-xl hover:bg-gray-800 hover:text-white transition-all tracking-widest border border-gray-800 uppercase">
-                    &larr; PREV
-                </button>
-                <div class="hidden md:block w-4 order-2"></div>
-                <button onclick="goNext()" class="flex-1 md:flex-none md:order-3 h-10 md:h-14 px-4 md:px-8 flex items-center justify-center bg-gray-900 bg-opacity-50 text-gray-400 font-bold text-xs md:text-lg rounded-lg md:rounded-xl hover:bg-gray-800 hover:text-white transition-all tracking-widest border border-gray-800 uppercase">
-                    NEXT &rarr;
-                </button>
-            </div>
+        <footer class="w-full px-2 md:px-8 py-3 grid grid-cols-2 gap-2 md:flex md:justify-between items-center bg-black bg-opacity-90 border-t border-gray-900 z-10 md:gap-4">
+            <!-- Lock -->
+            <button id="lock-btn" onclick="toggleLock()" class="order-1 md:order-2 col-span-1 h-12 md:h-16 flex items-center justify-center bg-red-950 bg-opacity-30 text-red-500 border border-red-800 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase shadow-md md:px-8">
+                🔒 LOCKED
+            </button>
+            <!-- Reset -->
+            <button onclick="resetQueue()" class="order-2 md:order-3 col-span-1 h-12 md:h-16 flex items-center justify-center bg-cyan-950 bg-opacity-30 text-cyan-400 border border-cyan-800 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase shadow-md md:px-10">
+                RESET (ESC)
+            </button>
+            <!-- Navigation Prev -->
+            <button onclick="goPrev()" class="order-3 md:order-1 col-span-1 h-12 md:h-16 flex items-center justify-center bg-gray-900 bg-opacity-50 text-gray-400 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-gray-800 hover:text-white transition-all tracking-widest border border-gray-800 uppercase shadow-md md:px-10">
+                &larr; PREV
+            </button>
+            <!-- Navigation Next -->
+            <button onclick="goNext()" class="order-4 md:order-4 col-span-1 h-12 md:h-16 flex items-center justify-center bg-gray-900 bg-opacity-50 text-gray-400 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-gray-800 hover:text-white transition-all tracking-widest border border-gray-800 uppercase shadow-md md:px-10">
+                NEXT &rarr;
+            </button>
         </footer>
     </div>
 
@@ -224,32 +220,39 @@
         <div id="participant-setup" class="absolute inset-0 z-50 bg-black flex flex-col items-center justify-center px-6 bg-cover bg-center" style="background-image: radial-gradient(circle, rgba(168,85,247,0.1) 0%, transparent 70%);">
             <h1 class="text-3xl font-black tracking-widest text-purple-500 mb-8 text-center drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">JOIN BUZZER</h1>
             
-            <div class="w-full max-w-sm space-y-5">
+            <!-- Step 1: Connect to Room -->
+            <div id="step-1-container" class="w-full max-w-sm space-y-5">
                 <div>
                     <label class="text-xs text-gray-400 tracking-widest block mb-2">HOST ROOM CODE</label>
                     <input type="text" id="input-code" class="w-full bg-gray-900 border-2 border-gray-700 rounded-xl p-4 text-white text-2xl text-center font-black uppercase focus:border-purple-500 outline-none transition-colors" placeholder="e.g. PIZZA" maxlength="6">
                 </div>
                 
-                <div>
-                    <label class="text-xs text-gray-400 tracking-widest block mb-2">YOUR TEAM NAME</label>
-                    <input type="text" id="input-name" class="w-full bg-gray-900 border-2 border-gray-700 rounded-xl p-4 text-white text-xl font-bold uppercase focus:border-purple-500 outline-none transition-colors" placeholder="Team Alpha" maxlength="20">
-                </div>
-
-                <div>
-                    <label class="text-xs text-gray-400 tracking-widest block mb-2">SELECT SLOT (1-10)</label>
-                    <select id="input-slot" class="w-full bg-gray-900 border-2 border-gray-700 rounded-xl p-4 text-white text-xl font-bold focus:border-purple-500 outline-none transition-colors">
-                        <option value="1">Slot 1</option><option value="2">Slot 2</option><option value="3">Slot 3</option>
-                        <option value="4">Slot 4</option><option value="5">Slot 5</option><option value="6">Slot 6</option>
-                        <option value="7">Slot 7</option><option value="8">Slot 8</option><option value="9">Slot 9</option>
-                        <option value="10">Slot 10</option>
-                    </select>
-                </div>
-
-                <button id="join-btn" onclick="connectToHost()" class="w-full mt-4 bg-purple-600 text-white font-black text-xl tracking-widest py-5 rounded-xl border-b-4 border-purple-800 active:translate-y-1 active:border-b-0 transition-all shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+                <button id="connect-btn" onclick="connectToHostStep1()" class="w-full mt-4 bg-purple-600 text-white font-black text-xl tracking-widest py-5 rounded-xl border-b-4 border-purple-800 active:translate-y-1 active:border-b-0 transition-all shadow-[0_0_15px_rgba(168,85,247,0.4)]">
                     CONNECT TO HOST
                 </button>
-                <p id="error-msg" class="text-red-500 text-center text-sm font-bold mt-2 h-4"></p>
+                <p id="error-msg-1" class="text-red-500 text-center text-sm font-bold mt-2 h-4"></p>
                 <button onclick="exitParticipantMode()" class="w-full text-gray-500 text-sm tracking-widest mt-4 hover:text-white transition-colors">← BACK TO MAIN MENU</button>
+            </div>
+
+            <!-- Step 2: Choose Slot and Name -->
+            <div id="step-2-container" class="w-full max-w-sm space-y-5 hidden">
+                <div>
+                    <label class="text-xs text-gray-400 tracking-widest block mb-2">AVAILABLE SLOTS</label>
+                    <select id="input-slot" class="w-full bg-gray-900 border-2 border-gray-700 rounded-xl p-4 text-white text-xl font-bold focus:border-purple-500 outline-none transition-colors">
+                        <!-- Injected via JS based on Host availability -->
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="text-xs text-gray-400 tracking-widest block mb-2">YOUR TEAM NAME (OPTIONAL)</label>
+                    <input type="text" id="input-name" class="w-full bg-gray-900 border-2 border-gray-700 rounded-xl p-4 text-white text-xl font-bold uppercase focus:border-purple-500 outline-none transition-colors" placeholder="Leave blank for slot #" maxlength="20">
+                </div>
+
+                <button id="join-btn" onclick="connectToHostStep2()" class="w-full mt-4 bg-purple-600 text-white font-black text-xl tracking-widest py-5 rounded-xl border-b-4 border-purple-800 active:translate-y-1 active:border-b-0 transition-all shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+                    JOIN GAME
+                </button>
+                <p id="error-msg-2" class="text-red-500 text-center text-sm font-bold mt-2 h-4"></p>
+                <button onclick="backToStep1()" class="w-full text-gray-500 text-sm tracking-widest mt-4 hover:text-white transition-colors">← BACK TO ROOM CODE</button>
             </div>
         </div>
 
@@ -262,17 +265,17 @@
                 </div>
                 <button onclick="leaveRoom()" class="text-[10px] md:text-xs font-bold tracking-widest text-red-400 border border-red-500 bg-red-950 bg-opacity-30 px-3 py-2 rounded-lg hover:bg-opacity-60 transition-colors shadow-lg">LEAVE</button>
             </header>
-
-            <main class="flex-1 flex flex-col items-center justify-center p-6 mt-16 pb-6 w-full">
-                <button id="huge-buzzer" onclick="sendBuzz()" class="buzzer-btn w-full max-w-md aspect-square rounded-[3rem] border-8 border-white border-opacity-30 bg-gray-800 text-white font-black text-5xl tracking-widest uppercase flex flex-col items-center justify-center gap-4 transition-colors duration-300">
+            <main class="flex-1 flex flex-col items-center justify-center p-4 md:p-8 mt-12 md:mt-16 pb-6 w-full">
+                <!-- Dynamically contained circular buzzer -->
+                <button id="huge-buzzer" onclick="sendBuzz()" class="buzzer-btn w-full max-w-[80vw] md:max-w-md aspect-square max-h-[50vh] md:max-h-none rounded-[3rem] md:rounded-[5rem] border-8 border-white bg-gray-800 text-white font-black text-4xl md:text-6xl tracking-widest uppercase flex flex-col items-center justify-center gap-4 transition-colors duration-300 mx-auto">
                     <span id="buzzer-text">LOCKED</span>
-                    <svg id="buzzer-icon" xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg id="buzzer-icon" xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 md:h-20 md:w-20 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z" />
                     </svg>
                 </button>
                 
                 <!-- Mini Participant Queue -->
-                <div class="w-full max-w-md mt-6 bg-black bg-opacity-40 border border-gray-800 p-3 rounded-2xl flex flex-col items-center shadow-inner">
+                <div class="w-full max-w-md mt-6 bg-black border border-gray-800 p-3 rounded-2xl flex flex-col items-center shadow-inner">
                     <p class="text-[9px] md:text-[10px] text-gray-500 tracking-[0.2em] uppercase font-bold mb-2">Live Queue Status</p>
                     <div id="mini-queue-list" class="flex gap-2 overflow-x-auto w-full justify-center min-h-[2rem] items-center">
                         <span class="text-xs text-gray-600 font-mono tracking-widest">EMPTY</span>
@@ -446,9 +449,13 @@
 
             hostPeer.on('connection', (conn) => {
                 conn.on('data', (data) => {
-                    if (data.type === 'join') {
+                    if (data.type === 'check_room') {
+                        // Return list of slots currently taken so participant can update their dropdown
+                        const takenSlots = Object.keys(pData).filter(s => pConnections[s] && pConnections[s].open);
+                        conn.send({ type: 'room_info', takenSlots: takenSlots });
+                    } else if (data.type === 'join') {
                         const slot = data.slot.toString();
-                        // Smart Unavailability Check: Only reject if the slot is taken AND the connection is open
+                        // Smart Unavailability Check
                         if (pData[slot] && pConnections[slot] && pConnections[slot].open && pData[slot].peerId !== conn.peer) {
                             conn.send({ type: 'rejected', message: 'Slot already taken.' });
                             return;
@@ -459,7 +466,7 @@
                         conn.send({ type: 'accepted', slot: slot, color: SLOT_COLORS[slot].color, locked: hostLocked });
                         saveHostSession();
                         renderDashboard();
-                        broadcastQueue(); // send initial queue state to new user
+                        broadcastQueue(); 
                     } else if (data.type === 'buzz') {
                         let buzzedSlot = Object.keys(pConnections).find(key => pConnections[key].peer === conn.peer);
                         if (buzzedSlot) handleHostBuzz(buzzedSlot);
@@ -590,10 +597,10 @@
             const btn = document.getElementById('lock-btn');
             if (hostLocked) {
                 btn.innerHTML = '🔒 LOCKED';
-                btn.className = "flex-1 md:flex-none h-12 md:h-14 px-2 md:px-8 flex items-center justify-center bg-red-950 bg-opacity-30 text-red-500 border border-red-800 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase";
+                btn.className = "order-1 md:order-2 col-span-1 h-12 md:h-16 flex items-center justify-center bg-red-950 bg-opacity-30 text-red-500 border border-red-800 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase shadow-md md:px-8";
             } else {
                 btn.innerHTML = '🔓 UNLOCKED';
-                btn.className = "flex-1 md:flex-none h-12 md:h-14 px-2 md:px-8 flex items-center justify-center bg-green-950 bg-opacity-30 text-green-500 border border-green-800 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase";
+                btn.className = "order-1 md:order-2 col-span-1 h-12 md:h-16 flex items-center justify-center bg-green-950 bg-opacity-30 text-green-500 border border-green-800 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase shadow-md md:px-8";
             }
             saveHostSession();
             broadcastState(); updateHostUI();
@@ -632,27 +639,66 @@
             const nextEl = document.getElementById('next-card');
             const queueListEl = document.getElementById('queue-list');
 
+            const mainBaseClasses = "order-1 md:order-2 w-full md:w-[50%] lg:w-[55%] h-[40vh] md:h-full flex flex-col items-center justify-center rounded-[2rem] md:rounded-[3rem] transition-all duration-300 relative overflow-hidden px-4 shadow-2xl ";
+            const sideBaseClasses = "order-2 md:order-1 w-[48%] md:w-[22%] lg:w-[20%] h-[18vh] md:h-[70%] md:my-auto px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl transition-all duration-500 ";
+
             if (hostQueue.length === 0) {
                 queueListEl.innerHTML = '<span class="text-gray-700 font-mono tracking-widest text-xs md:text-sm">EMPTY</span>';
                 
-                mainEl.className = "order-1 md:order-2 w-full md:flex-1 md:min-w-[40%] md:max-w-[70%] h-[40vh] md:h-[100%] max-h-[95%] flex flex-col items-center justify-center rounded-[2rem] md:rounded-[3rem] transition-all duration-300 relative overflow-hidden border-2 border-dashed border-gray-800 bg-black bg-opacity-50 spotlight-active px-4";
+                mainEl.className = mainBaseClasses + "border-2 border-dashed border-gray-800 bg-black bg-opacity-50 spotlight-active";
                 mainEl.style.removeProperty('--team-color');
                 mainEl.style.removeProperty('--team-shadow');
 
                 if (hostLocked) {
                     mainEl.innerHTML = `
-                        <button onclick="toggleLock()" class="px-6 md:px-16 py-6 md:py-8 bg-red-950 bg-opacity-40 border-2 border-red-600 rounded-3xl shadow-[0_0_30px_rgba(239,68,68,0.4)] hover:shadow-[0_0_60px_rgba(239,68,68,0.7)] transition-all flex flex-col items-center gap-2 md:gap-4 cursor-pointer w-full max-w-[90%] md:w-auto">
+                        <button onclick="toggleLock()" class="px-6 md:px-16 py-6 md:py-8 bg-red-950 bg-opacity-40 border-2 border-red-600 rounded-3xl shadow-[0_0_30px_rgba(239,68,68,0.4)] hover:shadow-[0_0_60px_rgba(239,68,68,0.7)] transition-all flex flex-col items-center gap-2 md:gap-4 cursor-pointer w-full max-w-[90%] md:w-auto transform hover:scale-105">
                             <span class="text-4xl md:text-6xl font-black text-red-500 tracking-widest text-center">LOCKED</span>
                             <span class="text-[10px] md:text-xl font-mono text-red-400 tracking-[0.2em] md:tracking-[0.3em] opacity-80 text-center">TAP HERE / PRESS [SPACE] TO UNLOCK</span>
                         </button>
                     `;
                 } else {
                     mainEl.innerHTML = `
-                        <button onclick="toggleLock()" class="px-6 md:px-16 py-6 md:py-8 bg-green-950 bg-opacity-20 border-2 border-green-800 rounded-3xl shadow-[0_0_30px_rgba(34,197,94,0.2)] transition-all flex flex-col items-center cursor-pointer w-full max-w-[90%] md:w-auto">
+                        <button onclick="toggleLock()" class="px-6 md:px-16 py-6 md:py-8 bg-green-950 bg-opacity-20 border-2 border-green-800 rounded-3xl shadow-[0_0_30px_rgba(34,197,94,0.2)] hover:shadow-[0_0_40px_rgba(34,197,94,0.4)] transition-all flex flex-col items-center cursor-pointer w-full max-w-[90%] md:w-auto transform hover:scale-105">
                             <span class="text-4xl md:text-6xl font-black text-green-500 tracking-widest text-center">SYSTEM LIVE</span>
                         </button>
                     `;
                 }
+                
+                prevEl.className = sideBaseClasses + "hide-card";
+                nextEl.className = sideBaseClasses + "hide-card";
+                return;
+            }
+
+            queueListEl.innerHTML = hostQueue.map((item, idx) => `
+                <div class="px-3 md:px-6 h-8 md:h-14 flex-shrink-0 flex items-center justify-center rounded-lg md:rounded-2xl text-sm md:text-2xl font-black transition-all duration-300 ${idx === hostCurrentIndex ? 'border-2 md:border-4 scale-110 shadow-lg' : 'border-2 opacity-50'}"
+                     style="background-color: ${item.color}20; color: ${item.color}; border-color: ${item.color}; box-shadow: ${idx === hostCurrentIndex ? '0 0 20px ' + item.shadow : 'none'}">
+                    ${item.name}
+                </div>
+            `).join('');
+
+            const cItem = hostQueue[hostCurrentIndex];
+            const pItem = hostCurrentIndex > 0 ? hostQueue[hostCurrentIndex - 1] : null;
+            const nItem = hostCurrentIndex < hostQueue.length - 1 ? hostQueue[hostCurrentIndex + 1] : null;
+
+            mainEl.className = mainBaseClasses + "neon-box-main z-10 spotlight-active";
+            mainEl.style.setProperty('--team-color', cItem.color);
+            mainEl.style.setProperty('--team-shadow', cItem.shadow);
+            mainEl.innerHTML = `<div class="text-glow font-black leading-none text-center w-full" style="font-size: ${getDynamicFontSize(cItem.name, true)}; white-space: nowrap; line-height: 1;">${cItem.name}</div>`;
+
+            if (pItem) {
+                prevEl.className = sideBaseClasses + "neon-box show-card";
+                prevEl.style.setProperty('--team-color', pItem.color);
+                prevEl.style.setProperty('--team-shadow', pItem.shadow);
+                prevEl.innerHTML = `<div class="text-glow font-black opacity-80 text-center w-full" style="font-size: ${getDynamicFontSize(pItem.name, false)}; white-space: nowrap; line-height: 1;">${pItem.name}</div>`;
+            } else { prevEl.className = sideBaseClasses + "hide-card"; }
+
+            if (nItem) {
+                nextEl.className = sideBaseClasses + "neon-box show-card";
+                nextEl.style.setProperty('--team-color', nItem.color);
+                nextEl.style.setProperty('--team-shadow', nItem.shadow);
+                nextEl.innerHTML = `<div class="text-glow font-black opacity-80 text-center w-full" style="font-size: ${getDynamicFontSize(nItem.name, false)}; white-space: nowrap; line-height: 1;">${nItem.name}</div>`;
+            } else { nextEl.className = sideBaseClasses + "hide-card"; }
+        }
                 
                 prevEl.className = "order-2 md:order-1 w-[48%] md:w-auto md:flex-[0.4] md:min-w-[15%] md:max-w-[25%] h-[18vh] md:h-[65%] px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl transition-all duration-500 hide-card";
                 nextEl.className = "order-3 md:order-3 w-[48%] md:w-auto md:flex-[0.4] md:min-w-[15%] md:max-w-[25%] h-[18vh] md:h-[65%] px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl transition-all duration-500 hide-card";
@@ -698,6 +744,9 @@
         let partLocked = true;
         let partColor = '#333333';
         let isReconnecting = false;
+        let pendingHostCode = "";
+        let currentParticipantName = "";
+        let currentParticipantSlot = "";
 
         function savePartSession(code, name, slot) {
             localStorage.setItem(PART_SESSION_KEY, JSON.stringify({code, name, slot}));
@@ -710,9 +759,34 @@
                     const data = JSON.parse(s);
                     document.getElementById('input-code').value = data.code;
                     document.getElementById('input-name').value = data.name;
+                    document.getElementById('input-slot').innerHTML = `<option value="${data.slot}">Slot ${data.slot}</option>`;
                     document.getElementById('input-slot').value = data.slot;
+                    
+                    pendingHostCode = data.code;
+                    currentParticipantName = data.name;
+                    currentParticipantSlot = data.slot;
+
                     startParticipantMode();
-                    connectToHost(true);
+                    
+                    if (partPeer) partPeer.destroy(); 
+                    partPeer = new Peer();
+
+                    partPeer.on('open', () => {
+                        const targetId = 'buzzer-host-' + data.code;
+                        partConn = partPeer.connect(targetId, { reliable: true });
+
+                        partConn.on('open', () => { 
+                            partConn.send({ type: 'join', slot: data.slot, name: data.name }); 
+                            isReconnecting = false;
+                        });
+
+                        setupPartConnHandlers(true);
+                    });
+                    
+                    partPeer.on('error', (err) => { 
+                        console.error(err); 
+                        handlePartDisconnect(); 
+                    });
                 } catch(e){}
             }
         }
@@ -730,9 +804,9 @@
             }
         }
 
-        function showPartError(msg) {
-            document.getElementById('error-msg').innerText = msg;
-            document.getElementById('join-btn').innerText = "CONNECT TO HOST";
+        function showPartError(msg, step = 1) {
+            document.getElementById('error-msg-' + step).innerText = msg;
+            document.getElementById(step === 1 ? 'connect-btn' : 'join-btn').innerText = step === 1 ? "CONNECT TO HOST" : "JOIN GAME";
         }
 
         function setParticipantStatus(msg, isWarning = false) {
@@ -741,16 +815,20 @@
             status.className = `text-[10px] md:text-xs font-mono tracking-[0.2em] mt-1 ${isWarning ? 'text-yellow-400 font-bold animate-pulse' : 'text-white opacity-80'}`;
         }
 
-        function connectToHost(isAuto = false) {
-            const hostCode = document.getElementById('input-code').value.trim().toUpperCase();
-            let teamName = document.getElementById('input-name').value.trim();
-            const slot = document.getElementById('input-slot').value;
+        function backToStep1() {
+            if(partConn) { partConn.close(); partConn = null; }
+            if(partPeer) { partPeer.destroy(); partPeer = null; }
+            document.getElementById('step-2-container').classList.add('hidden');
+            document.getElementById('step-1-container').classList.remove('hidden');
+            document.getElementById('connect-btn').innerText = "CONNECT TO HOST";
+        }
 
-            if (!hostCode) { showPartError("Please enter host room code."); return; }
-            if (!teamName) teamName = slot; // Default to slot number
+        function connectToHostStep1() {
+            const hostCode = document.getElementById('input-code').value.trim().toUpperCase();
+            if (!hostCode) { showPartError("Please enter host room code.", 1); return; }
             
-            if (!isAuto) document.getElementById('join-btn').innerText = "CONNECTING...";
-            document.getElementById('error-msg').innerText = "";
+            document.getElementById('connect-btn').innerText = "CONNECTING...";
+            document.getElementById('error-msg-1').innerText = "";
 
             if (partPeer) partPeer.destroy(); 
             partPeer = new Peer();
@@ -760,61 +838,112 @@
                 partConn = partPeer.connect(targetId, { reliable: true });
 
                 partConn.on('open', () => { 
-                    partConn.send({ type: 'join', slot: slot, name: teamName }); 
-                    isReconnecting = false;
+                    pendingHostCode = hostCode;
+                    partConn.send({ type: 'check_room' }); 
                 });
 
-                partConn.on('data', (data) => {
-                    if (data.type === 'accepted') {
-                        partColor = data.color;
-                        savePartSession(hostCode, teamName, slot);
-                        setupParticipantUI(teamName, data.locked);
-                    } else if (data.type === 'rejected') {
-                        if(isAuto) {
-                            localStorage.removeItem(PART_SESSION_KEY);
-                            alert("Your slot was taken by someone else while you were disconnected. Please pick another slot.");
-                            location.reload();
-                        } else {
-                            showPartError(data.message); 
-                            partConn.close();
-                        }
-                    } else if (data.type === 'state') {
-                        setParticipantLock(data.locked);
-                    } else if (data.type === 'name_update') {
-                        document.getElementById('display-name').innerText = data.name;
-                        // update locally saved name
-                        const saved = JSON.parse(localStorage.getItem(PART_SESSION_KEY));
-                        if(saved) { saved.name = data.name; localStorage.setItem(PART_SESSION_KEY, JSON.stringify(saved)); }
-                    } else if (data.type === 'queue_update') {
-                        renderParticipantMiniQueue(data.queue, data.index);
-                    } else if (data.type === 'kicked') {
-                        alert("You were disconnected by the host."); 
-                        localStorage.removeItem(PART_SESSION_KEY);
-                        location.reload();
-                    } else if (data.type === 'quiz_ended') {
-                        alert("The host has ended the quiz session.");
-                        localStorage.removeItem(PART_SESSION_KEY);
-                        location.reload();
-                    }
-                });
-
-                partConn.on('close', () => { handlePartDisconnect(); });
-                partConn.on('error', () => { handlePartDisconnect(); });
+                setupPartConnHandlers(false);
             });
+            
             partPeer.on('error', (err) => { 
-                if(!isAuto) showPartError("Network error. Try again."); 
+                showPartError("Network error. Try again.", 1); 
                 console.error(err); 
             });
         }
 
-        function handlePartDisconnect() {
-            // If they manually left, the session key would be gone
-            if(!localStorage.getItem(PART_SESSION_KEY)) return;
+        function connectToHostStep2() {
+            let teamName = document.getElementById('input-name').value.trim();
+            const slot = document.getElementById('input-slot').value;
+
+            if (!teamName) teamName = slot; 
             
+            currentParticipantName = teamName;
+            currentParticipantSlot = slot;
+
+            document.getElementById('join-btn').innerText = "JOINING...";
+            document.getElementById('error-msg-2').innerText = "";
+
+            partConn.send({ type: 'join', slot: slot, name: teamName }); 
+            isReconnecting = false;
+        }
+
+        function setupPartConnHandlers(isAuto) {
+            partConn.on('data', (data) => {
+                if (data.type === 'room_info') {
+                    // Populate slot select input dynamically
+                    const select = document.getElementById('input-slot');
+                    select.innerHTML = '';
+                    let hasSlots = false;
+                    for(let i=1; i<=10; i++) {
+                        if(!data.takenSlots.includes(i.toString())) {
+                            select.innerHTML += `<option value="${i}">Slot ${i}</option>`;
+                            hasSlots = true;
+                        }
+                    }
+                    if(!hasSlots) {
+                        showPartError("Room is currently full!", 1);
+                        partConn.close();
+                        return;
+                    }
+                    document.getElementById('step-1-container').classList.add('hidden');
+                    document.getElementById('step-2-container').classList.remove('hidden');
+                    document.getElementById('connect-btn').innerText = "CONNECT TO HOST";
+
+                } else if (data.type === 'accepted') {
+                    partColor = data.color;
+                    savePartSession(pendingHostCode, currentParticipantName, currentParticipantSlot);
+                    setupParticipantUI(currentParticipantName, data.locked);
+                } else if (data.type === 'rejected') {
+                    if(isAuto) {
+                        localStorage.removeItem(PART_SESSION_KEY);
+                        alert("Your slot was taken by someone else while you were disconnected. Please pick another slot.");
+                        location.reload();
+                    } else {
+                        showPartError(data.message, 2); 
+                        partConn.send({ type: 'check_room' }); // Refresh slots if rejected
+                    }
+                } else if (data.type === 'state') {
+                    setParticipantLock(data.locked);
+                } else if (data.type === 'name_update') {
+                    document.getElementById('display-name').innerText = data.name;
+                    const saved = JSON.parse(localStorage.getItem(PART_SESSION_KEY));
+                    if(saved) { saved.name = data.name; localStorage.setItem(PART_SESSION_KEY, JSON.stringify(saved)); }
+                } else if (data.type === 'queue_update') {
+                    renderParticipantMiniQueue(data.queue, data.index);
+                } else if (data.type === 'kicked') {
+                    alert("You were disconnected by the host."); 
+                    localStorage.removeItem(PART_SESSION_KEY);
+                    location.reload();
+                } else if (data.type === 'quiz_ended') {
+                    alert("The host has ended the quiz session.");
+                    localStorage.removeItem(PART_SESSION_KEY);
+                    location.reload();
+                }
+            });
+
+            partConn.on('close', () => { 
+                if (document.getElementById('participant-buzzer').classList.contains('flex')) {
+                    handlePartDisconnect(); 
+                } else {
+                    if(!isAuto) showPartError("Connection lost. Try again.", 1);
+                    backToStep1();
+                }
+            });
+            partConn.on('error', () => { 
+                if (document.getElementById('participant-buzzer').classList.contains('flex')) {
+                    handlePartDisconnect(); 
+                } else {
+                    if(!isAuto) showPartError("Connection error. Try again.", 1);
+                    backToStep1();
+                }
+            });
+        }
+
+        function handlePartDisconnect() {
+            if(!localStorage.getItem(PART_SESSION_KEY)) return;
             isReconnecting = true;
             setParticipantStatus("CONNECTION LOST - RECONNECTING...", true);
-            // Try to reconnect silently every 3 seconds
-            setTimeout(() => { if(isReconnecting) connectToHost(true); }, 3000);
+            setTimeout(() => { if(isReconnecting) autoConnectPart(); }, 3000);
         }
 
         function setupParticipantUI(name, initiallyLocked) {
