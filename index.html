@@ -752,6 +752,11 @@
             saveHostSession();
             updateHostUI();
             broadcastQueue();
+            
+            // Notify participant that their buzz was VALID!
+            if (pConnections[slotId] && pConnections[slotId].open) {
+                pConnections[slotId].send({ type: 'buzz_accepted' });
+            }
         }
 
         function goNext() { if (hostCurrentIndex < hostQueue.length - 1) { hostCurrentIndex++; saveHostSession(); updateHostUI(); broadcastQueue(); } }
@@ -1048,6 +1053,9 @@
                     if(saved) { saved.name = data.name; localStorage.setItem(PART_SESSION_KEY, JSON.stringify(saved)); }
                 } else if (data.type === 'queue_update') {
                     renderParticipantMiniQueue(data.queue, data.index);
+                } else if (data.type === 'buzz_accepted') {
+                    // Host approved the buzz (passed cooldown)
+                    triggerBuzzSuccess();
                 } else if (data.type === 'kicked') {
                     customAlert("You were disconnected by the host.", () => {
                         localStorage.removeItem(PART_SESSION_KEY);
@@ -1146,12 +1154,19 @@
         function sendBuzz() {
             if (partLocked || !partConn || !partConn.open) return;
             
+            partConn.send({ type: 'buzz' });
+            
+            // Tiny tap effect so the button feels responsive before validation
+            const btn = document.getElementById('huge-buzzer');
+            btn.style.transform = 'scale(0.95)';
+            setTimeout(() => { btn.style.transform = 'scale(1)'; }, 100);
+        }
+
+        function triggerBuzzSuccess() {
             if (navigator.vibrate) navigator.vibrate(100);
             
-            // Play sound locally on the participant's phone!
+            // Play sound locally on the participant's phone ONLY on valid buzz!
             playSound();
-
-            partConn.send({ type: 'buzz' });
             
             const btn = document.getElementById('huge-buzzer');
             const text = document.getElementById('buzzer-text');
