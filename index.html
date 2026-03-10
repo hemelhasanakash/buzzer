@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ultimate Stage Buzzer</title>
+    <title>Online Stage Buzzer</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Orbitron Font -->
@@ -57,20 +57,9 @@
             color: var(--team-color);
         }
 
-        .hide-card {
-            opacity: 0;
-            transform: scale(0.8);
-            pointer-events: none;
-        }
-
-        .show-card {
-            opacity: 0.5;
-            transform: scale(1);
-        }
-
-        .spotlight-active {
-            opacity: 1 !important;
-        }
+        .hide-card { opacity: 0; transform: scale(0.8); pointer-events: none; }
+        .show-card { opacity: 0.5; transform: scale(1); }
+        .spotlight-active { opacity: 1 !important; }
 
         /* Buzzer Button Effects */
         .buzzer-btn {
@@ -98,7 +87,7 @@
     <div id="landing-screen" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-90 px-6 backdrop-blur-sm transition-opacity duration-500">
         <h1 class="text-4xl md:text-6xl font-black text-white mb-12 tracking-widest text-center" style="text-shadow: 0 0 20px rgba(255,255,255,0.5);">STAGE BUZZER</h1>
         
-        <div class="flex flex-col md:flex-row gap-6 w-full max-w-3xl">
+        <div id="landing-buttons" class="flex flex-col md:flex-row gap-6 w-full max-w-3xl">
             <!-- Host Button -->
             <button onclick="startHostMode()" class="flex-1 bg-cyan-950 bg-opacity-40 border-2 border-cyan-700 hover:bg-cyan-900 hover:border-cyan-400 rounded-3xl p-8 flex flex-col items-center gap-4 transition-all shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)] group">
                 <span class="text-6xl group-hover:scale-110 transition-transform">💻</span>
@@ -112,6 +101,10 @@
                 <span class="text-lg md:text-xl font-black tracking-widest text-purple-400 text-center">JOIN AS PARTICIPANT/TEAM</span>
                 <span class="text-xs font-mono text-purple-200 opacity-70 text-center">Connect your phone to a host quiz as a buzzer.</span>
             </button>
+        </div>
+        
+        <div id="resume-container" class="hidden mt-8 text-center flex-col items-center">
+            <p class="text-gray-400 mb-4 tracking-widest animate-pulse">RECOVERING PREVIOUS SESSION...</p>
         </div>
     </div>
 
@@ -128,9 +121,18 @@
                     <button onclick="closeNetwork()" class="text-red-500 font-bold hover:text-red-400">CLOSE [X]</button>
                 </div>
                 
-                <div class="bg-black p-4 rounded-xl border border-cyan-900 mb-6 text-center">
-                    <p class="text-gray-400 text-xs md:text-sm tracking-widest mb-2">PARTICIPANTS JOIN USING THIS ROOM ID:</p>
-                    <p id="room-code-display" class="text-4xl md:text-6xl font-black text-white tracking-[0.2em] animate-pulse">...</p>
+                <div class="flex flex-col md:flex-row justify-between items-center bg-black p-4 rounded-xl border border-gray-800 mb-4 gap-4">
+                    <div class="text-center md:text-left">
+                        <p class="text-gray-500 text-[10px] md:text-xs tracking-widest mb-1">PARTICIPANTS JOIN USING THIS CODE:</p>
+                        <p id="room-code-display" class="text-3xl md:text-5xl font-black text-white tracking-[0.2em] animate-pulse">...</p>
+                    </div>
+                    <div class="flex flex-col items-end gap-2">
+                        <div class="flex items-center gap-3">
+                            <label class="text-[10px] md:text-xs text-gray-400 tracking-widest">COOLDOWN (SEC):</label>
+                            <input type="number" id="host-cooldown" value="5" min="0" onchange="updateCooldown()" class="w-16 bg-gray-900 border border-gray-700 rounded text-white text-center font-bold px-2 py-1 outline-none focus:border-cyan-500">
+                        </div>
+                        <button onclick="endHostSession()" class="px-4 py-2 bg-red-950 bg-opacity-40 border border-red-900 text-red-400 rounded-lg text-[10px] md:text-xs font-bold tracking-widest hover:bg-red-900 hover:text-white transition-colors">END QUIZ & EXIT</button>
+                    </div>
                 </div>
 
                 <div class="max-h-[40vh] md:max-h-[50vh] overflow-y-auto pr-2">
@@ -159,27 +161,23 @@
                 <p class="text-[10px] md:text-xs text-cyan-400 font-mono tracking-widest mt-1">ROOM: <span id="header-room-code" class="font-bold text-white">...</span></p>
             </div>
             <div class="flex gap-4 w-8 md:w-24 justify-end">
-                <button onclick="openNetwork()" class="w-8 h-8 md:w-12 md:h-12 flex items-center justify-center text-cyan-500 hover:bg-gray-800 rounded-full transition-all text-xl" title="Network Dashboard">
-                    📡
-                </button>
+                <button onclick="openNetwork()" class="w-8 h-8 md:w-12 md:h-12 flex items-center justify-center text-cyan-500 hover:bg-gray-800 rounded-full transition-all text-xl" title="Network Dashboard">📡</button>
             </div>
         </header>
 
         <!-- Host Main Content Area -->
         <main class="flex-1 flex flex-col w-full items-center justify-center px-2 md:px-8 py-2 md:py-6 gap-2 md:gap-4 relative overflow-hidden">
             
-            <!-- Cards Area (Responsive Stack) -->
             <div class="flex-1 flex flex-row flex-wrap md:flex-nowrap w-full max-w-7xl items-center justify-center gap-2 md:gap-6 min-h-0">
-                
-                <!-- Main Spotlight Card (Order 1 on mobile, Order 2 on desktop) -->
+                <!-- Main Spotlight Card -->
                 <div id="main-card" class="order-1 md:order-2 w-full md:flex-1 md:min-w-[40%] md:max-w-[70%] h-[40vh] md:h-[100%] max-h-[95%] flex flex-col items-center justify-center rounded-[2rem] md:rounded-[3rem] transition-all duration-300 relative overflow-hidden border-2 border-dashed border-gray-800 bg-black bg-opacity-50 spotlight-active px-4">
                     <div class="text-3xl md:text-5xl font-bold tracking-widest mb-4 text-gray-600 text-center">AWAITING CONNECTIONS</div>
                 </div>
 
-                <!-- Previous Card (Order 2 on mobile, Order 1 on desktop) -->
+                <!-- Previous Card -->
                 <div id="prev-card" class="order-2 md:order-1 w-[48%] md:w-auto md:flex-[0.4] md:min-w-[15%] md:max-w-[25%] h-[18vh] md:h-[65%] px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl hide-card"></div>
 
-                <!-- Next Card (Order 3 on mobile, Order 3 on desktop) -->
+                <!-- Next Card -->
                 <div id="next-card" class="order-3 md:order-3 w-[48%] md:w-auto md:flex-[0.4] md:min-w-[15%] md:max-w-[25%] h-[18vh] md:h-[65%] px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl hide-card"></div>
             </div>
 
@@ -251,24 +249,35 @@
                     CONNECT TO HOST
                 </button>
                 <p id="error-msg" class="text-red-500 text-center text-sm font-bold mt-2 h-4"></p>
-                <button onclick="location.reload()" class="w-full text-gray-500 text-sm tracking-widest mt-4 hover:text-white transition-colors">← BACK TO MAIN MENU</button>
+                <button onclick="exitParticipantMode()" class="w-full text-gray-500 text-sm tracking-widest mt-4 hover:text-white transition-colors">← BACK TO MAIN MENU</button>
             </div>
         </div>
 
-        <!-- Buzzer Screen (Hidden initially) -->
+        <!-- Buzzer Screen -->
         <div id="participant-buzzer" class="hidden flex-col h-full w-full relative">
-            <header class="py-4 text-center bg-black bg-opacity-50 border-b border-white border-opacity-20 absolute top-0 w-full z-10">
-                <h2 id="display-name" class="text-2xl font-black tracking-widest uppercase text-white shadow-black drop-shadow-lg px-4 truncate">TEAM</h2>
-                <p id="display-status" class="text-sm font-mono tracking-[0.2em] text-white opacity-80 mt-1">CONNECTED TO HOST</p>
+            <header class="py-3 px-4 flex justify-between items-center bg-black bg-opacity-50 border-b border-white border-opacity-20 absolute top-0 w-full z-10">
+                <div>
+                    <h2 id="display-name" class="text-xl md:text-2xl font-black tracking-widest uppercase text-white shadow-black drop-shadow-lg truncate max-w-[200px] md:max-w-md">TEAM</h2>
+                    <p id="display-status" class="text-[10px] md:text-xs font-mono tracking-[0.2em] text-white opacity-80 mt-1">CONNECTED</p>
+                </div>
+                <button onclick="leaveRoom()" class="text-[10px] md:text-xs font-bold tracking-widest text-red-400 border border-red-500 bg-red-950 bg-opacity-30 px-3 py-2 rounded-lg hover:bg-opacity-60 transition-colors shadow-lg">LEAVE</button>
             </header>
 
-            <main class="flex-1 flex items-center justify-center p-6 mt-16 pb-20">
+            <main class="flex-1 flex flex-col items-center justify-center p-6 mt-16 pb-6 w-full">
                 <button id="huge-buzzer" onclick="sendBuzz()" class="buzzer-btn w-full max-w-md aspect-square rounded-[3rem] border-8 border-white border-opacity-30 bg-gray-800 text-white font-black text-5xl tracking-widest uppercase flex flex-col items-center justify-center gap-4 transition-colors duration-300">
                     <span id="buzzer-text">LOCKED</span>
                     <svg id="buzzer-icon" xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z" />
                     </svg>
                 </button>
+                
+                <!-- Mini Participant Queue -->
+                <div class="w-full max-w-md mt-6 bg-black bg-opacity-40 border border-gray-800 p-3 rounded-2xl flex flex-col items-center shadow-inner">
+                    <p class="text-[9px] md:text-[10px] text-gray-500 tracking-[0.2em] uppercase font-bold mb-2">Live Queue Status</p>
+                    <div id="mini-queue-list" class="flex gap-2 overflow-x-auto w-full justify-center min-h-[2rem] items-center">
+                        <span class="text-xs text-gray-600 font-mono tracking-widest">EMPTY</span>
+                    </div>
+                </div>
             </main>
         </div>
     </div>
@@ -277,6 +286,9 @@
     <!-- GLOBAL APPLICATION LOGIC                   -->
     <!-- ========================================== -->
     <script>
+        const HOST_SESSION_KEY = 'buzzerHostSession';
+        const PART_SESSION_KEY = 'buzzerPartSession';
+
         // --- Shared Audio Unlock ---
         function unlockAudio() {
             const audio = document.getElementById('buzzer-sound');
@@ -286,9 +298,15 @@
                     audio.pause();
                     audio.currentTime = 0;
                     audio.volume = 1;
-                }).catch(e => console.log("Audio unlock pending interaction."));
+                }).catch(e => console.log("Audio unlock pending."));
             }
         }
+
+        // Global click to ensure audio context is unlocked even during auto-resumes
+        document.body.addEventListener('click', function globalUnlock() {
+            unlockAudio();
+            document.body.removeEventListener('click', globalUnlock);
+        });
 
         function playSound() {
             const audio = document.getElementById('buzzer-sound');
@@ -298,14 +316,27 @@
             }
         }
 
+        // --- Auto Resume Logic ---
+        document.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.getItem(HOST_SESSION_KEY)) {
+                document.getElementById('landing-buttons').classList.add('hidden');
+                document.getElementById('resume-container').classList.replace('hidden', 'flex');
+                setTimeout(() => startHostMode(true), 1000);
+            } else if (localStorage.getItem(PART_SESSION_KEY)) {
+                document.getElementById('landing-buttons').classList.add('hidden');
+                document.getElementById('resume-container').classList.replace('hidden', 'flex');
+                setTimeout(() => autoConnectPart(), 1000);
+            }
+        });
+
         // --- Mode Switching ---
-        function startHostMode() {
+        function startHostMode(isResume = false) {
             unlockAudio();
             document.getElementById('landing-screen').classList.add('opacity-0', 'pointer-events-none');
             setTimeout(() => {
                 document.getElementById('landing-screen').classList.add('hidden');
                 document.getElementById('host-screen').classList.replace('hidden', 'flex');
-                initHostNetwork();
+                initHostNetwork(isResume);
             }, 500);
         }
 
@@ -318,6 +349,11 @@
             }, 500);
         }
 
+        function exitParticipantMode() {
+            localStorage.removeItem(PART_SESSION_KEY);
+            location.reload();
+        }
+
         // ==========================================
         // HOST LOGIC
         // ==========================================
@@ -327,12 +363,11 @@
         let hostCurrentIndex = -1;
         let hostLocked = true;
         let hostCooldowns = {};
-        const HOST_COOLDOWN_SEC = 5;
+        let hostCooldownSecs = 5;
         let pConnections = {}; 
         let pData = {}; 
 
         const FAST_FOODS = ["JUICE", "BURGER", "PIZZA", "PASTA", "CHICK", "FRIES", "TACO", "DONUT", "SODA", "SUSHI", "WRAP", "SALAD", "BACON", "BREAD"];
-
         const SLOT_COLORS = {
             '1': { color: '#ff003c', shadow: 'rgba(255, 0, 60, 0.7)' },
             '2': { color: '#00f0ff', shadow: 'rgba(0, 240, 255, 0.7)' },
@@ -346,37 +381,96 @@
             '10':{ color: '#ffffff', shadow: 'rgba(255, 255, 255, 0.7)' }
         };
 
-        function initHostNetwork() {
-            // Pick a random fast-food word (all are 4-6 letters)
-            hostId = FAST_FOODS[Math.floor(Math.random() * FAST_FOODS.length)];
+        function saveHostSession() {
+            const data = { hostId, hostQueue, hostCurrentIndex, hostLocked, hostCooldownSecs, pData };
+            localStorage.setItem(HOST_SESSION_KEY, JSON.stringify(data));
+        }
+
+        function restoreHostSession() {
+            const s = localStorage.getItem(HOST_SESSION_KEY);
+            if(s) {
+                try {
+                    const data = JSON.parse(s);
+                    hostId = data.hostId;
+                    hostQueue = data.hostQueue || [];
+                    hostCurrentIndex = data.hostCurrentIndex !== undefined ? data.hostCurrentIndex : -1;
+                    hostLocked = data.hostLocked !== undefined ? data.hostLocked : true;
+                    hostCooldownSecs = data.hostCooldownSecs !== undefined ? data.hostCooldownSecs : 5;
+                    pData = data.pData || {};
+                    document.getElementById('host-cooldown').value = hostCooldownSecs;
+                    return true;
+                } catch(e) {}
+            }
+            return false;
+        }
+
+        function endHostSession() {
+            if(confirm("Are you sure you want to end the quiz? All connections will be dropped and data cleared.")) {
+                for(let key in pConnections) { 
+                    if(pConnections[key].open) {
+                        pConnections[key].send({ type: 'quiz_ended' });
+                    }
+                }
+                setTimeout(() => {
+                    localStorage.removeItem(HOST_SESSION_KEY);
+                    location.reload();
+                }, 500);
+            }
+        }
+
+        function initHostNetwork(isResume = false) {
+            if(isResume && restoreHostSession()) {
+                // Recovered ID
+            } else {
+                hostId = FAST_FOODS[Math.floor(Math.random() * FAST_FOODS.length)];
+            }
 
             document.getElementById('room-code-display').innerText = hostId;
             document.getElementById('header-room-code').innerText = hostId;
 
             hostPeer = new Peer('buzzer-host-' + hostId);
 
-            hostPeer.on('open', (id) => { console.log('Host ID: ' + id); updateHostUI(); });
+            hostPeer.on('open', (id) => { 
+                console.log('Host initialized with ID: ' + id); 
+                updateHostUI();
+                saveHostSession();
+            });
+
+            hostPeer.on('error', (err) => {
+                if(err.type === 'unavailable-id') {
+                    alert("Previous session is still actively locked by the network. Starting a fresh room.");
+                    localStorage.removeItem(HOST_SESSION_KEY);
+                    location.reload();
+                }
+            });
 
             hostPeer.on('connection', (conn) => {
                 conn.on('data', (data) => {
                     if (data.type === 'join') {
                         const slot = data.slot.toString();
-                        if (pData[slot] && pData[slot].peerId !== conn.peer) {
+                        // Smart Unavailability Check: Only reject if the slot is taken AND the connection is open
+                        if (pData[slot] && pConnections[slot] && pConnections[slot].open && pData[slot].peerId !== conn.peer) {
                             conn.send({ type: 'rejected', message: 'Slot already taken.' });
                             return;
                         }
+                        
                         pData[slot] = { name: data.name.toUpperCase(), ...SLOT_COLORS[slot], peerId: conn.peer };
                         pConnections[slot] = conn;
                         conn.send({ type: 'accepted', slot: slot, color: SLOT_COLORS[slot].color, locked: hostLocked });
+                        saveHostSession();
                         renderDashboard();
+                        broadcastQueue(); // send initial queue state to new user
                     } else if (data.type === 'buzz') {
                         let buzzedSlot = Object.keys(pConnections).find(key => pConnections[key].peer === conn.peer);
                         if (buzzedSlot) handleHostBuzz(buzzedSlot);
+                    } else if (data.type === 'leave') {
+                        let leftSlot = Object.keys(pConnections).find(key => pConnections[key].peer === conn.peer);
+                        if (leftSlot) kickParticipant(leftSlot);
                     }
                 });
+                
                 conn.on('close', () => {
-                    let slot = Object.keys(pConnections).find(key => pConnections[key].peer === conn.peer);
-                    if (slot) kickParticipant(slot);
+                    renderDashboard(); // Update dashboard to show disconnected status, but KEEP the slot
                 });
             });
         }
@@ -387,8 +481,42 @@
             }
         }
 
+        function broadcastQueue() {
+            for (let slot in pConnections) {
+                if (pConnections[slot].open) {
+                    pConnections[slot].send({ type: 'queue_update', queue: hostQueue, index: hostCurrentIndex });
+                }
+            }
+        }
+
         function openNetwork() { document.getElementById('network-modal').classList.replace('hidden', 'flex'); renderDashboard(); }
         function closeNetwork() { document.getElementById('network-modal').classList.replace('flex', 'hidden'); }
+
+        function updateCooldown() {
+            hostCooldownSecs = parseInt(document.getElementById('host-cooldown').value) || 0;
+            saveHostSession();
+        }
+
+        function editTeamName(slot) {
+            const currentName = pData[slot].name;
+            const newName = prompt("Enter new team name:", currentName);
+            if (newName && newName.trim() !== "") {
+                pData[slot].name = newName.trim().toUpperCase();
+                
+                // Update names already in queue
+                hostQueue.forEach(item => { if(item.key === slot) item.name = pData[slot].name; });
+                
+                saveHostSession();
+                renderDashboard();
+                updateHostUI();
+                broadcastQueue();
+                
+                // Alert the participant of name change
+                if(pConnections[slot] && pConnections[slot].open) {
+                    pConnections[slot].send({ type: 'name_update', name: pData[slot].name });
+                }
+            }
+        }
 
         function renderDashboard() {
             const tbody = document.getElementById('participant-list');
@@ -397,13 +525,15 @@
                 const slot = i.toString();
                 const p = pData[slot];
                 if (p) {
+                    const isConnected = pConnections[slot] && pConnections[slot].open;
                     tbody.innerHTML += `
                         <tr class="border-b border-gray-800 hover:bg-gray-900 transition-colors">
                             <td class="py-3"><span class="px-3 py-1 rounded-md font-bold text-black" style="background:${p.color}">${slot}</span></td>
                             <td class="py-3 font-bold text-white">${p.name}</td>
-                            <td class="py-3 text-green-500 font-mono text-[10px] md:text-xs hidden md:table-cell">CONNECTED</td>
+                            <td class="py-3 font-mono text-[10px] md:text-xs hidden md:table-cell ${isConnected ? 'text-green-500' : 'text-yellow-500'}">${isConnected ? 'CONNECTED' : 'DISCONNECTED'}</td>
                             <td class="py-3 text-right">
-                                <button onclick="handleHostBuzz('${slot}')" class="px-2 md:px-3 py-1 bg-cyan-900 text-cyan-300 rounded text-[10px] md:text-xs mr-1 md:mr-2 hover:bg-cyan-800">BUZZ</button>
+                                <button onclick="editTeamName('${slot}')" class="px-2 md:px-3 py-1 bg-yellow-900 text-yellow-300 rounded text-[10px] md:text-xs mr-1 hover:bg-yellow-800">EDIT</button>
+                                <button onclick="handleHostBuzz('${slot}')" class="px-2 md:px-3 py-1 bg-cyan-900 text-cyan-300 rounded text-[10px] md:text-xs mr-1 hover:bg-cyan-800">BUZZ</button>
                                 <button onclick="kickParticipant('${slot}')" class="px-2 md:px-3 py-1 bg-red-900 text-red-300 rounded text-[10px] md:text-xs hover:bg-red-800">KICK</button>
                             </td>
                         </tr>`;
@@ -421,7 +551,9 @@
 
         function kickParticipant(slot) {
             if (pConnections[slot]) { pConnections[slot].send({ type: 'kicked' }); setTimeout(() => pConnections[slot].close(), 500); }
-            delete pConnections[slot]; delete pData[slot]; renderDashboard();
+            delete pConnections[slot]; delete pData[slot]; 
+            saveHostSession();
+            renderDashboard();
         }
 
         function handleHostBuzz(slotId) {
@@ -430,26 +562,27 @@
             if (!p) return; 
 
             const now = Date.now();
-            if (hostCooldowns[slotId] && (now - hostCooldowns[slotId] < HOST_COOLDOWN_SEC * 1000)) return;
-
-            const lastBuzz = hostQueue.length > 0 ? hostQueue[hostQueue.length - 1] : null;
-            if (lastBuzz && lastBuzz.key === slotId) return; 
+            // Allows consecutive buzzes from same team ONLY AFTER cooldown
+            if (hostCooldowns[slotId] && (now - hostCooldowns[slotId] < hostCooldownSecs * 1000)) return;
 
             hostQueue.push({ key: slotId, name: p.name, color: p.color, shadow: p.shadow });
             hostCooldowns[slotId] = now;
 
-            playSound();
+            playSound(); // Sound plays on HOST UI!
 
             if (hostCurrentIndex === -1) hostCurrentIndex = 0;
+            saveHostSession();
             updateHostUI();
+            broadcastQueue();
         }
 
-        function goNext() { if (hostCurrentIndex < hostQueue.length - 1) { hostCurrentIndex++; updateHostUI(); } }
-        function goPrev() { if (hostCurrentIndex > 0) { hostCurrentIndex--; updateHostUI(); } }
+        function goNext() { if (hostCurrentIndex < hostQueue.length - 1) { hostCurrentIndex++; saveHostSession(); updateHostUI(); broadcastQueue(); } }
+        function goPrev() { if (hostCurrentIndex > 0) { hostCurrentIndex--; saveHostSession(); updateHostUI(); broadcastQueue(); } }
         
         function resetQueue() {
             hostQueue = []; hostCurrentIndex = -1; hostCooldowns = {}; 
-            if (!hostLocked) toggleLock(); else updateHostUI();
+            saveHostSession();
+            if (!hostLocked) toggleLock(); else { updateHostUI(); broadcastQueue(); }
         }
 
         function toggleLock() {
@@ -462,12 +595,16 @@
                 btn.innerHTML = '🔓 UNLOCKED';
                 btn.className = "flex-1 md:flex-none h-12 md:h-14 px-2 md:px-8 flex items-center justify-center bg-green-950 bg-opacity-30 text-green-500 border border-green-800 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase";
             }
+            saveHostSession();
             broadcastState(); updateHostUI();
         }
 
         // Host Keyboard bindings
         document.addEventListener('keydown', (e) => {
             if (e.repeat || document.getElementById('host-screen').classList.contains('hidden')) return;
+            // Prevent interference if a prompt/input is focused
+            if(document.activeElement.tagName === "INPUT") return;
+
             if (e.code === 'Space') { e.preventDefault(); toggleLock(); }
             else if (e.code === 'ArrowRight' || e.code === 'KeyN') goNext();
             else if (e.code === 'ArrowLeft' || e.code === 'KeyP') goPrev();
@@ -560,20 +697,59 @@
         let partConn = null;
         let partLocked = true;
         let partColor = '#333333';
+        let isReconnecting = false;
+
+        function savePartSession(code, name, slot) {
+            localStorage.setItem(PART_SESSION_KEY, JSON.stringify({code, name, slot}));
+        }
+
+        function autoConnectPart() {
+            const s = localStorage.getItem(PART_SESSION_KEY);
+            if (s) {
+                try {
+                    const data = JSON.parse(s);
+                    document.getElementById('input-code').value = data.code;
+                    document.getElementById('input-name').value = data.name;
+                    document.getElementById('input-slot').value = data.slot;
+                    startParticipantMode();
+                    connectToHost(true);
+                } catch(e){}
+            }
+        }
+
+        function leaveRoom() {
+            if(confirm("Are you sure you want to leave the quiz? This will free your slot.")) {
+                localStorage.removeItem(PART_SESSION_KEY);
+                if (partConn && partConn.open) {
+                    partConn.send({ type: 'leave' });
+                }
+                setTimeout(() => {
+                    if (partConn) partConn.close();
+                    location.reload();
+                }, 200);
+            }
+        }
 
         function showPartError(msg) {
             document.getElementById('error-msg').innerText = msg;
             document.getElementById('join-btn').innerText = "CONNECT TO HOST";
         }
 
-        function connectToHost() {
+        function setParticipantStatus(msg, isWarning = false) {
+            const status = document.getElementById('display-status');
+            status.innerText = msg;
+            status.className = `text-[10px] md:text-xs font-mono tracking-[0.2em] mt-1 ${isWarning ? 'text-yellow-400 font-bold animate-pulse' : 'text-white opacity-80'}`;
+        }
+
+        function connectToHost(isAuto = false) {
             const hostCode = document.getElementById('input-code').value.trim().toUpperCase();
-            const teamName = document.getElementById('input-name').value.trim();
+            let teamName = document.getElementById('input-name').value.trim();
             const slot = document.getElementById('input-slot').value;
 
-            if (!hostCode || !teamName) { showPartError("Please fill all fields."); return; }
+            if (!hostCode) { showPartError("Please enter host room code."); return; }
+            if (!teamName) teamName = slot; // Default to slot number
             
-            document.getElementById('join-btn').innerText = "CONNECTING...";
+            if (!isAuto) document.getElementById('join-btn').innerText = "CONNECTING...";
             document.getElementById('error-msg').innerText = "";
 
             if (partPeer) partPeer.destroy(); 
@@ -583,25 +759,62 @@
                 const targetId = 'buzzer-host-' + hostCode;
                 partConn = partPeer.connect(targetId, { reliable: true });
 
-                partConn.on('open', () => { partConn.send({ type: 'join', slot: slot, name: teamName }); });
+                partConn.on('open', () => { 
+                    partConn.send({ type: 'join', slot: slot, name: teamName }); 
+                    isReconnecting = false;
+                });
 
                 partConn.on('data', (data) => {
                     if (data.type === 'accepted') {
                         partColor = data.color;
+                        savePartSession(hostCode, teamName, slot);
                         setupParticipantUI(teamName, data.locked);
                     } else if (data.type === 'rejected') {
-                        showPartError(data.message); partConn.close();
+                        if(isAuto) {
+                            localStorage.removeItem(PART_SESSION_KEY);
+                            alert("Your slot was taken by someone else while you were disconnected. Please pick another slot.");
+                            location.reload();
+                        } else {
+                            showPartError(data.message); 
+                            partConn.close();
+                        }
                     } else if (data.type === 'state') {
                         setParticipantLock(data.locked);
+                    } else if (data.type === 'name_update') {
+                        document.getElementById('display-name').innerText = data.name;
+                        // update locally saved name
+                        const saved = JSON.parse(localStorage.getItem(PART_SESSION_KEY));
+                        if(saved) { saved.name = data.name; localStorage.setItem(PART_SESSION_KEY, JSON.stringify(saved)); }
+                    } else if (data.type === 'queue_update') {
+                        renderParticipantMiniQueue(data.queue, data.index);
                     } else if (data.type === 'kicked') {
-                        alert("You were disconnected by the host."); location.reload();
+                        alert("You were disconnected by the host."); 
+                        localStorage.removeItem(PART_SESSION_KEY);
+                        location.reload();
+                    } else if (data.type === 'quiz_ended') {
+                        alert("The host has ended the quiz session.");
+                        localStorage.removeItem(PART_SESSION_KEY);
+                        location.reload();
                     }
                 });
 
-                partConn.on('close', () => { alert("Lost connection to host."); location.reload(); });
-                partConn.on('error', () => { showPartError("Could not reach host."); });
+                partConn.on('close', () => { handlePartDisconnect(); });
+                partConn.on('error', () => { handlePartDisconnect(); });
             });
-            partPeer.on('error', (err) => { showPartError("Network error. Try again."); console.error(err); });
+            partPeer.on('error', (err) => { 
+                if(!isAuto) showPartError("Network error. Try again."); 
+                console.error(err); 
+            });
+        }
+
+        function handlePartDisconnect() {
+            // If they manually left, the session key would be gone
+            if(!localStorage.getItem(PART_SESSION_KEY)) return;
+            
+            isReconnecting = true;
+            setParticipantStatus("CONNECTION LOST - RECONNECTING...", true);
+            // Try to reconnect silently every 3 seconds
+            setTimeout(() => { if(isReconnecting) connectToHost(true); }, 3000);
         }
 
         function setupParticipantUI(name, initiallyLocked) {
@@ -624,21 +837,34 @@
             const btn = document.getElementById('huge-buzzer');
             const text = document.getElementById('buzzer-text');
             const icon = document.getElementById('buzzer-icon');
-            const status = document.getElementById('display-status');
 
             if (locked) {
                 btn.style.backgroundColor = '#1a1a1a';
                 btn.disabled = true;
                 text.innerText = "LOCKED";
-                status.innerText = "WAITING FOR HOST...";
+                setParticipantStatus("WAITING FOR HOST TO UNLOCK...");
                 icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z" />`;
             } else {
                 btn.style.backgroundColor = partColor;
                 btn.disabled = false;
                 text.innerText = "BUZZ!";
-                status.innerText = "SYSTEM LIVE - READY";
+                setParticipantStatus("SYSTEM LIVE - READY");
                 icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />`;
             }
+        }
+
+        function renderParticipantMiniQueue(queue, currentIndex) {
+            const container = document.getElementById('mini-queue-list');
+            if(!queue || queue.length === 0) {
+                container.innerHTML = '<span class="text-xs text-gray-600 font-mono tracking-widest">EMPTY</span>';
+                return;
+            }
+            container.innerHTML = queue.map((item, idx) => `
+                <div class="px-2 py-1 flex-shrink-0 rounded text-[10px] md:text-xs font-black transition-all ${idx === currentIndex ? 'border-2 scale-110 shadow-lg' : 'border border-opacity-30 opacity-60'}"
+                     style="background-color: ${item.color}20; color: ${item.color}; border-color: ${item.color}; box-shadow: ${idx === currentIndex ? '0 0 10px ' + item.shadow : 'none'}">
+                    ${item.name}
+                </div>
+            `).join('');
         }
 
         function sendBuzz() {
