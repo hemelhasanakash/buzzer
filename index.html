@@ -699,42 +699,6 @@
                 nextEl.innerHTML = `<div class="text-glow font-black opacity-80 text-center w-full" style="font-size: ${getDynamicFontSize(nItem.name, false)}; white-space: nowrap; line-height: 1;">${nItem.name}</div>`;
             } else { nextEl.className = sideBaseClasses + "hide-card"; }
         }
-                
-                prevEl.className = "order-2 md:order-1 w-[48%] md:w-auto md:flex-[0.4] md:min-w-[15%] md:max-w-[25%] h-[18vh] md:h-[65%] px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl transition-all duration-500 hide-card";
-                nextEl.className = "order-3 md:order-3 w-[48%] md:w-auto md:flex-[0.4] md:min-w-[15%] md:max-w-[25%] h-[18vh] md:h-[65%] px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl transition-all duration-500 hide-card";
-                return;
-            }
-
-            queueListEl.innerHTML = hostQueue.map((item, idx) => `
-                <div class="px-3 md:px-5 h-8 md:h-12 flex-shrink-0 flex items-center justify-center rounded-lg md:rounded-xl text-sm md:text-xl font-black transition-all duration-300 ${idx === hostCurrentIndex ? 'border-2 md:border-4 scale-110' : 'border-2 opacity-50'}"
-                     style="background-color: ${item.color}20; color: ${item.color}; border-color: ${item.color}; box-shadow: ${idx === hostCurrentIndex ? '0 0 15px ' + item.shadow : 'none'}">
-                    ${item.name}
-                </div>
-            `).join('');
-
-            const cItem = hostQueue[hostCurrentIndex];
-            const pItem = hostCurrentIndex > 0 ? hostQueue[hostCurrentIndex - 1] : null;
-            const nItem = hostCurrentIndex < hostQueue.length - 1 ? hostQueue[hostCurrentIndex + 1] : null;
-
-            mainEl.className = "order-1 md:order-2 w-full md:flex-1 md:min-w-[40%] md:max-w-[70%] h-[40vh] md:h-[100%] max-h-[95%] flex flex-col items-center justify-center rounded-[2rem] md:rounded-[3rem] transition-all duration-300 relative overflow-hidden neon-box-main z-10 spotlight-active px-4";
-            mainEl.style.setProperty('--team-color', cItem.color);
-            mainEl.style.setProperty('--team-shadow', cItem.shadow);
-            mainEl.innerHTML = `<div class="text-glow font-black leading-none text-center w-full" style="font-size: ${getDynamicFontSize(cItem.name, true)}; white-space: nowrap; line-height: 1;">${cItem.name}</div>`;
-
-            if (pItem) {
-                prevEl.className = "order-2 md:order-1 w-[48%] md:w-auto md:flex-[0.4] md:min-w-[15%] md:max-w-[25%] h-[18vh] md:h-[65%] px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl transition-all duration-500 neon-box show-card";
-                prevEl.style.setProperty('--team-color', pItem.color);
-                prevEl.style.setProperty('--team-shadow', pItem.shadow);
-                prevEl.innerHTML = `<div class="text-glow font-black opacity-80 text-center w-full" style="font-size: ${getDynamicFontSize(pItem.name, false)}; white-space: nowrap; line-height: 1;">${pItem.name}</div>`;
-            } else { prevEl.className = "order-2 md:order-1 w-[48%] md:w-auto md:flex-[0.4] md:min-w-[15%] md:max-w-[25%] h-[18vh] md:h-[65%] px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl transition-all duration-500 hide-card"; }
-
-            if (nItem) {
-                nextEl.className = "order-3 md:order-3 w-[48%] md:w-auto md:flex-[0.4] md:min-w-[15%] md:max-w-[25%] h-[18vh] md:h-[65%] px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl transition-all duration-500 neon-box show-card";
-                nextEl.style.setProperty('--team-color', nItem.color);
-                nextEl.style.setProperty('--team-shadow', nItem.shadow);
-                nextEl.innerHTML = `<div class="text-glow font-black opacity-80 text-center w-full" style="font-size: ${getDynamicFontSize(nItem.name, false)}; white-space: nowrap; line-height: 1;">${nItem.name}</div>`;
-            } else { nextEl.className = "order-3 md:order-3 w-[48%] md:w-auto md:flex-[0.4] md:min-w-[15%] md:max-w-[25%] h-[18vh] md:h-[65%] px-2 md:px-6 flex flex-col items-center justify-center rounded-2xl md:rounded-3xl transition-all duration-500 hide-card"; }
-        }
 
         // ==========================================
         // PARTICIPANT LOGIC
@@ -1014,4 +978,3 @@
     </script>
 </body>
 </html>
-
