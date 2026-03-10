@@ -114,6 +114,41 @@
     </div>
 
     <!-- ========================================== -->
+    <!-- HOST SETUP SCREEN (GIANT ROOM CODE)        -->
+    <!-- ========================================== -->
+    <div id="host-setup-screen" class="hidden absolute inset-0 z-[60] flex-col items-center justify-center bg-black bg-opacity-95 px-4 md:px-6 backdrop-blur-md overflow-y-auto py-10 transition-opacity duration-300">
+        <h2 class="text-2xl md:text-4xl font-black text-cyan-500 mb-2 tracking-widest text-center drop-shadow-lg">ROOM SETUP</h2>
+        <p class="text-gray-400 font-mono tracking-widest mb-8 md:mb-12 text-center text-xs md:text-sm uppercase">Configure your game settings</p>
+        
+        <div class="w-full max-w-4xl flex flex-col items-center gap-6 md:gap-8">
+            <!-- Code Input -->
+            <div class="w-full bg-gray-900 border-2 border-cyan-800 rounded-3xl p-6 md:p-10 shadow-[0_0_50px_rgba(34,211,238,0.2)] flex flex-col items-center group transition-colors focus-within:border-cyan-400 focus-within:shadow-[0_0_60px_rgba(34,211,238,0.4)]">
+                <label class="text-cyan-400 font-bold tracking-widest mb-4 text-xs md:text-lg">ROOM CODE (4-6 CHARS)</label>
+                <input type="text" id="setup-room-code" class="text-6xl md:text-[8rem] leading-none font-black text-white tracking-[0.1em] text-center bg-transparent border-b-4 border-gray-700 focus:border-cyan-400 outline-none w-full max-w-lg md:max-w-2xl uppercase transition-colors" maxlength="6">
+                <p class="text-[10px] md:text-xs text-gray-500 font-mono mt-4 text-center">Tap above to use a custom code or keep the generated one.</p>
+            </div>
+
+            <!-- Settings Grid -->
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+                <!-- Max Players -->
+                <div class="bg-gray-900 border border-gray-700 rounded-2xl p-6 flex flex-col items-center justify-center shadow-lg">
+                    <label class="text-gray-400 font-bold tracking-widest mb-3 text-[10px] md:text-sm text-center">MAX PARTICIPANTS (1-100)</label>
+                    <input type="number" id="setup-max-players" class="text-4xl md:text-5xl font-black text-white text-center bg-black border-2 border-gray-800 rounded-xl p-2 w-32 focus:border-purple-500 outline-none transition-colors" min="1" max="100" value="10">
+                </div>
+                <!-- Cooldown -->
+                <div class="bg-gray-900 border border-gray-700 rounded-2xl p-6 flex flex-col items-center justify-center shadow-lg">
+                    <label class="text-gray-400 font-bold tracking-widest mb-3 text-[10px] md:text-sm text-center">COOLDOWN (SECONDS)</label>
+                    <input type="number" id="setup-cooldown-input" class="text-4xl md:text-5xl font-black text-white text-center bg-black border-2 border-gray-800 rounded-xl p-2 w-32 focus:border-red-500 outline-none transition-colors" min="0" max="60" value="5">
+                </div>
+            </div>
+
+            <button onclick="startHostServer()" class="w-full max-w-md px-8 py-5 mt-2 bg-cyan-600 text-white rounded-2xl font-black text-xl md:text-2xl tracking-widest hover:bg-cyan-500 transition-all shadow-[0_0_20px_rgba(34,211,238,0.5)] hover:shadow-[0_0_40px_rgba(34,211,238,0.8)] transform hover:-translate-y-1 uppercase border-b-4 border-cyan-800 active:border-b-0 active:translate-y-1">
+                START SERVER
+            </button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
     <!-- HOST UI                                    -->
     <!-- ========================================== -->
     <div id="host-screen" class="hidden flex-col h-full w-full relative z-0">
@@ -282,26 +317,39 @@
                 <button onclick="leaveRoom()" class="text-[10px] md:text-xs font-bold tracking-widest text-red-400 border border-red-500 bg-red-950 bg-opacity-30 px-3 py-2 rounded-lg hover:bg-opacity-60 transition-colors shadow-lg shrink-0">LEAVE</button>
             </header>
             
-            <main class="flex-1 flex flex-col items-center justify-center p-4 w-full min-h-0 overflow-hidden mt-16 pb-4">
-                <!-- Dynamically contained circular buzzer -->
-                <button id="huge-buzzer" onclick="sendBuzz()" class="buzzer-btn w-[70vw] h-[70vw] max-w-sm max-h-sm md:w-96 md:h-96 rounded-full border-8 border-white bg-gray-800 text-white font-black text-4xl md:text-6xl tracking-widest uppercase flex flex-col items-center justify-center gap-4 transition-colors duration-300 mx-auto flex-shrink-0">
-                    <span id="buzzer-text">LOCKED</span>
-                    <svg id="buzzer-icon" xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 md:h-20 md:w-20 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                </button>
-                
-                <!-- Mini Participant Queue -->
-                <div class="w-full max-w-md mt-8 bg-black border border-gray-800 p-3 rounded-2xl flex flex-col items-center shadow-inner flex-shrink-0">
-                    <p class="text-[9px] md:text-[10px] text-gray-500 tracking-[0.2em] uppercase font-bold mb-2">Live Queue Status</p>
-                    <div id="mini-queue-list" class="flex gap-2 overflow-x-auto w-full justify-start md:justify-center min-h-[2rem] items-center px-2">
-                        <span class="text-xs text-gray-600 font-mono tracking-widest">EMPTY</span>
+            <main class="flex-1 flex flex-col items-center p-6 w-full h-full relative z-0 pt-20 md:pt-24 pb-6 overflow-hidden">
+                <div class="flex-1 w-full flex flex-col items-center justify-center min-h-0 shrink-0">
+                    <!-- Dynamically contained futuristic rectangular buzzer -->
+                    <button id="huge-buzzer" onclick="sendBuzz()" class="w-full max-w-sm aspect-[4/5] max-h-[55vh] rounded-[2.5rem] md:rounded-[3rem] border-4 border-white border-opacity-30 bg-gray-900 bg-opacity-40 backdrop-blur-md text-white font-black text-4xl md:text-6xl tracking-widest uppercase flex flex-col items-center justify-center gap-6 transition-all duration-300 mx-auto flex-shrink-0 relative overflow-hidden group shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+                        <div class="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"></div>
+                        <span id="buzzer-text" class="relative z-10 drop-shadow-lg transition-transform duration-100">LOCKED</span>
+                        <svg id="buzzer-icon" xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-24 md:w-24 opacity-80 relative z-10 drop-shadow-lg transition-transform duration-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                    </button>
+                    
+                    <!-- Mini Participant Queue -->
+                    <div class="w-full max-w-sm mt-8 bg-black bg-opacity-60 backdrop-blur-sm border border-gray-800 p-4 rounded-3xl flex flex-col items-center shadow-inner flex-shrink-0">
+                        <p class="text-[9px] md:text-[10px] text-gray-500 tracking-[0.2em] uppercase font-bold mb-3">Live Queue Status</p>
+                        <div id="mini-queue-list" class="flex gap-3 overflow-x-auto w-full justify-start md:justify-center min-h-[2.5rem] items-center px-2 py-1">
+                            <span class="text-xs text-gray-600 font-mono tracking-widest">EMPTY</span>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Copyright Footer -->
-                <p class="text-[9px] text-gray-600 tracking-[0.2em] font-mono uppercase mt-auto pt-6 pointer-events-none">© Created by hha</p>
+                <p class="text-[9px] text-gray-600 tracking-[0.2em] font-mono uppercase mt-6 shrink-0 pointer-events-none">© Created by hha</p>
             </main>
+        </div>
+    </div>
+
+    <!-- Custom System Modal -->
+    <div id="sys-modal" class="fixed inset-0 z-[100] bg-black bg-opacity-90 hidden flex-col items-center justify-center backdrop-blur-md px-4">
+        <div class="bg-gray-900 border border-gray-700 p-6 md:p-8 rounded-2xl w-full max-w-sm shadow-[0_0_50px_rgba(0,0,0,0.8)] text-center">
+            <h3 id="sys-modal-msg" class="text-white text-sm md:text-base font-bold mb-6 tracking-widest leading-relaxed">Message</h3>
+            <div id="sys-modal-btns" class="flex justify-center gap-4 w-full">
+                <!-- Injected via JS -->
+            </div>
         </div>
     </div>
 
@@ -339,6 +387,59 @@
             }
         }
 
+        // --- Custom Modal System (Bypasses iframe alert/confirm blocks) ---
+        function closeSysModal() {
+            document.getElementById('sys-modal').classList.replace('flex', 'hidden');
+        }
+
+        function customAlert(msg, onConfirm = null) {
+            const modal = document.getElementById('sys-modal');
+            document.getElementById('sys-modal-msg').innerText = msg;
+            window._sysModalConfirm = function() {
+                closeSysModal();
+                if(onConfirm) onConfirm();
+            };
+            document.getElementById('sys-modal-btns').innerHTML = `
+                <button onclick="window._sysModalConfirm()" class="px-8 py-3 bg-cyan-600 text-white rounded-xl font-bold tracking-widest hover:bg-cyan-500 transition-colors w-full">OK</button>
+            `;
+            modal.classList.replace('hidden', 'flex');
+        }
+
+        function customConfirm(msg, onConfirm) {
+            const modal = document.getElementById('sys-modal');
+            document.getElementById('sys-modal-msg').innerText = msg;
+            window._sysModalConfirm = function() {
+                closeSysModal();
+                if(onConfirm) onConfirm();
+            };
+            document.getElementById('sys-modal-btns').innerHTML = `
+                <button onclick="closeSysModal()" class="flex-1 px-4 py-3 bg-gray-800 text-gray-400 rounded-xl font-bold tracking-widest hover:bg-gray-700 hover:text-white transition-colors text-xs md:text-sm">CANCEL</button>
+                <button onclick="window._sysModalConfirm()" class="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl font-bold tracking-widest hover:bg-red-500 transition-colors text-xs md:text-sm">CONFIRM</button>
+            `;
+            modal.classList.replace('hidden', 'flex');
+        }
+
+        function customPrompt(msg, defaultVal, onConfirm) {
+            const modal = document.getElementById('sys-modal');
+            document.getElementById('sys-modal-msg').innerText = msg;
+            window._sysModalConfirm = function() {
+                const val = document.getElementById('sys-prompt-input').value;
+                closeSysModal();
+                if(onConfirm) onConfirm(val);
+            };
+            document.getElementById('sys-modal-btns').innerHTML = `
+                <div class="flex flex-col w-full gap-4">
+                    <input type="text" id="sys-prompt-input" value="${defaultVal}" class="w-full bg-black border border-gray-600 rounded-lg p-3 text-white text-center font-bold outline-none focus:border-cyan-500" autocomplete="off" maxlength="20">
+                    <div class="flex justify-center gap-3">
+                        <button onclick="closeSysModal()" class="flex-1 px-4 py-3 bg-gray-800 text-gray-400 rounded-xl font-bold tracking-widest hover:bg-gray-700 hover:text-white transition-colors text-xs md:text-sm">CANCEL</button>
+                        <button onclick="window._sysModalConfirm()" class="flex-1 px-4 py-3 bg-cyan-600 text-white rounded-xl font-bold tracking-widest hover:bg-cyan-500 transition-colors text-xs md:text-sm">SAVE</button>
+                    </div>
+                </div>
+            `;
+            modal.classList.replace('hidden', 'flex');
+            setTimeout(() => document.getElementById('sys-prompt-input').focus(), 100);
+        }
+
         // --- Auto Resume Logic ---
         document.addEventListener("DOMContentLoaded", () => {
             if (localStorage.getItem(HOST_SESSION_KEY)) {
@@ -358,9 +459,52 @@
             document.getElementById('landing-screen').classList.add('opacity-0', 'pointer-events-none');
             setTimeout(() => {
                 document.getElementById('landing-screen').classList.add('hidden');
-                document.getElementById('host-screen').classList.replace('hidden', 'flex');
-                initHostNetwork(isResume);
+                
+                if (isResume && restoreHostSession()) {
+                    document.getElementById('host-screen').classList.replace('hidden', 'flex');
+                    initHostNetwork(true);
+                } else {
+                    // Populate setup screen with generated code
+                    document.getElementById('setup-room-code').value = FAST_FOODS[Math.floor(Math.random() * FAST_FOODS.length)];
+                    document.getElementById('host-setup-screen').classList.replace('hidden', 'flex');
+                }
             }, 500);
+        }
+
+        function startHostServer() {
+            let code = document.getElementById('setup-room-code').value.trim().toUpperCase();
+            if(code.length < 4 || code.length > 6) {
+                customAlert("Room code must be between 4 and 6 characters.");
+                return;
+            }
+            if(!/^[A-Z0-9]+$/.test(code)) {
+                customAlert("Room code can only contain letters and numbers.");
+                return;
+            }
+            
+            let maxP = parseInt(document.getElementById('setup-max-players').value);
+            if(isNaN(maxP) || maxP < 1 || maxP > 100) {
+                customAlert("Max participants must be between 1 and 100.");
+                return;
+            }
+            
+            let cd = parseInt(document.getElementById('setup-cooldown-input').value);
+            if(isNaN(cd) || cd < 0) {
+                customAlert("Cooldown must be a valid number (0 or higher).");
+                return;
+            }
+
+            hostId = code;
+            hostMaxSlots = maxP;
+            hostCooldownSecs = cd;
+            document.getElementById('host-cooldown').value = hostCooldownSecs;
+
+            document.getElementById('host-setup-screen').classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                document.getElementById('host-setup-screen').classList.replace('flex', 'hidden');
+                document.getElementById('host-screen').classList.replace('hidden', 'flex');
+                initHostNetwork(false);
+            }, 300);
         }
 
         function startParticipantMode() {
@@ -387,6 +531,7 @@
         let hostLocked = true;
         let hostCooldowns = {};
         let hostCooldownSecs = 5;
+        let hostMaxSlots = 10;
         let pConnections = {}; 
         let pData = {}; 
 
@@ -404,8 +549,14 @@
             '10':{ color: '#ffffff', shadow: 'rgba(255, 255, 255, 0.7)' }
         };
 
+        function getColorForSlot(slotNum) {
+            const keys = Object.keys(SLOT_COLORS);
+            const idx = (parseInt(slotNum) - 1) % keys.length;
+            return SLOT_COLORS[keys[idx]];
+        }
+
         function saveHostSession() {
-            const data = { hostId, hostQueue, hostCurrentIndex, hostLocked, hostCooldownSecs, pData };
+            const data = { hostId, hostQueue, hostCurrentIndex, hostLocked, hostCooldownSecs, pData, hostMaxSlots };
             localStorage.setItem(HOST_SESSION_KEY, JSON.stringify(data));
         }
 
@@ -419,6 +570,7 @@
                     hostCurrentIndex = data.hostCurrentIndex !== undefined ? data.hostCurrentIndex : -1;
                     hostLocked = data.hostLocked !== undefined ? data.hostLocked : true;
                     hostCooldownSecs = data.hostCooldownSecs !== undefined ? data.hostCooldownSecs : 5;
+                    hostMaxSlots = data.hostMaxSlots !== undefined ? data.hostMaxSlots : 10;
                     pData = data.pData || {};
                     document.getElementById('host-cooldown').value = hostCooldownSecs;
                     return true;
@@ -428,9 +580,9 @@
         }
 
         function endHostSession() {
-            if(confirm("Are you sure you want to end the quiz? All connections will be dropped and data cleared.")) {
+            customConfirm("Are you sure you want to end the quiz? All connections will be dropped and data cleared.", () => {
                 for(let key in pConnections) { 
-                    if(pConnections[key].open) {
+                    if(pConnections[key] && pConnections[key].open) {
                         pConnections[key].send({ type: 'quiz_ended' });
                     }
                 }
@@ -438,16 +590,11 @@
                     localStorage.removeItem(HOST_SESSION_KEY);
                     location.reload();
                 }, 500);
-            }
+            });
         }
 
         function initHostNetwork(isResume = false) {
-            if(isResume && restoreHostSession()) {
-                // Recovered ID
-            } else {
-                hostId = FAST_FOODS[Math.floor(Math.random() * FAST_FOODS.length)];
-            }
-
+            // hostId is already configured via setup screen or restore
             document.getElementById('room-code-display').innerText = hostId;
             document.getElementById('header-room-code').innerText = hostId;
 
@@ -461,18 +608,19 @@
 
             hostPeer.on('error', (err) => {
                 if(err.type === 'unavailable-id') {
-                    alert("Previous session is still actively locked by the network. Starting a fresh room.");
-                    localStorage.removeItem(HOST_SESSION_KEY);
-                    location.reload();
+                    customAlert("Previous session is still actively locked by the network. Starting a fresh room.", () => {
+                        localStorage.removeItem(HOST_SESSION_KEY);
+                        location.reload();
+                    });
                 }
             });
 
             hostPeer.on('connection', (conn) => {
                 conn.on('data', (data) => {
                     if (data.type === 'check_room') {
-                        // Return list of slots currently taken so participant can update their dropdown
+                        // Return list of slots currently taken and max slots allowed
                         const takenSlots = Object.keys(pData).filter(s => pConnections[s] && pConnections[s].open);
-                        conn.send({ type: 'room_info', takenSlots: takenSlots });
+                        conn.send({ type: 'room_info', takenSlots: takenSlots, maxSlots: hostMaxSlots });
                     } else if (data.type === 'join') {
                         const slot = data.slot.toString();
                         // Smart Unavailability Check
@@ -481,9 +629,10 @@
                             return;
                         }
                         
-                        pData[slot] = { name: data.name.toUpperCase(), ...SLOT_COLORS[slot], peerId: conn.peer };
+                        const slotColorObj = getColorForSlot(slot);
+                        pData[slot] = { name: data.name.toUpperCase(), ...slotColorObj, peerId: conn.peer };
                         pConnections[slot] = conn;
-                        conn.send({ type: 'accepted', slot: slot, color: SLOT_COLORS[slot].color, locked: hostLocked });
+                        conn.send({ type: 'accepted', slot: slot, color: slotColorObj.color, locked: hostLocked });
                         saveHostSession();
                         renderDashboard();
                         broadcastQueue(); 
@@ -526,31 +675,33 @@
 
         function editTeamName(slot) {
             const currentName = pData[slot].name;
-            const newName = prompt("Enter new team name:", currentName);
-            if (newName && newName.trim() !== "") {
-                pData[slot].name = newName.trim().toUpperCase();
-                
-                // Update names already in queue
-                hostQueue.forEach(item => { if(item.key === slot) item.name = pData[slot].name; });
-                
-                saveHostSession();
-                renderDashboard();
-                updateHostUI();
-                broadcastQueue();
-                
-                // Alert the participant of name change
-                if(pConnections[slot] && pConnections[slot].open) {
-                    pConnections[slot].send({ type: 'name_update', name: pData[slot].name });
+            customPrompt("Enter new team name:", currentName, (newName) => {
+                if (newName && newName.trim() !== "") {
+                    pData[slot].name = newName.trim().toUpperCase();
+                    
+                    // Update names already in queue
+                    hostQueue.forEach(item => { if(item.key === slot) item.name = pData[slot].name; });
+                    
+                    saveHostSession();
+                    renderDashboard();
+                    updateHostUI();
+                    broadcastQueue();
+                    
+                    // Alert the participant of name change
+                    if(pConnections[slot] && pConnections[slot].open) {
+                        pConnections[slot].send({ type: 'name_update', name: pData[slot].name });
+                    }
                 }
-            }
+            });
         }
 
         function renderDashboard() {
             const tbody = document.getElementById('participant-list');
             tbody.innerHTML = '';
-            for(let i=1; i<=10; i++) {
+            for(let i=1; i<=hostMaxSlots; i++) {
                 const slot = i.toString();
                 const p = pData[slot];
+                
                 if (p) {
                     const isConnected = pConnections[slot] && pConnections[slot].open;
                     tbody.innerHTML += `
@@ -558,7 +709,7 @@
                             <td class="py-3"><span class="px-3 py-1 rounded-md font-bold text-black" style="background:${p.color}">${slot}</span></td>
                             <td class="py-3 font-bold text-white">${p.name}</td>
                             <td class="py-3 font-mono text-[10px] md:text-xs hidden md:table-cell ${isConnected ? 'text-green-500' : 'text-yellow-500'}">${isConnected ? 'CONNECTED' : 'DISCONNECTED'}</td>
-                            <td class="py-3 text-right">
+                            <td class="py-3 text-right whitespace-nowrap">
                                 <button onclick="editTeamName('${slot}')" class="px-2 md:px-3 py-1 bg-yellow-900 text-yellow-300 rounded text-[10px] md:text-xs mr-1 hover:bg-yellow-800">EDIT</button>
                                 <button onclick="handleHostBuzz('${slot}')" class="px-2 md:px-3 py-1 bg-cyan-900 text-cyan-300 rounded text-[10px] md:text-xs mr-1 hover:bg-cyan-800">BUZZ</button>
                                 <button onclick="kickParticipant('${slot}')" class="px-2 md:px-3 py-1 bg-red-900 text-red-300 rounded text-[10px] md:text-xs hover:bg-red-800">KICK</button>
@@ -609,7 +760,8 @@
         function resetQueue() {
             hostQueue = []; hostCurrentIndex = -1; hostCooldowns = {}; 
             saveHostSession();
-            if (!hostLocked) toggleLock(); else { updateHostUI(); broadcastQueue(); }
+            if (!hostLocked) toggleLock(); else { updateHostUI(); }
+            broadcastQueue(); // Guarantee queue updates on participant phones instantly
         }
 
         function toggleLock() {
@@ -777,7 +929,7 @@
         }
 
         function leaveRoom() {
-            if(confirm("Are you sure you want to leave the quiz? This will free your slot.")) {
+            customConfirm("Are you sure you want to leave the quiz? This will free your slot.", () => {
                 localStorage.removeItem(PART_SESSION_KEY);
                 if (partConn && partConn.open) {
                     partConn.send({ type: 'leave' });
@@ -786,7 +938,7 @@
                     if (partConn) partConn.close();
                     location.reload();
                 }, 200);
-            }
+            });
         }
 
         function showPartError(msg, step = 1) {
@@ -855,11 +1007,11 @@
         function setupPartConnHandlers(isAuto) {
             partConn.on('data', (data) => {
                 if (data.type === 'room_info') {
-                    // Populate slot select input dynamically
+                    // Populate slot select input dynamically based on max slots configured by host
                     const select = document.getElementById('input-slot');
                     select.innerHTML = '';
                     let hasSlots = false;
-                    for(let i=1; i<=10; i++) {
+                    for(let i=1; i<=data.maxSlots; i++) {
                         if(!data.takenSlots.includes(i.toString())) {
                             select.innerHTML += `<option value="${i}">Slot ${i}</option>`;
                             hasSlots = true;
@@ -881,8 +1033,9 @@
                 } else if (data.type === 'rejected') {
                     if(isAuto) {
                         localStorage.removeItem(PART_SESSION_KEY);
-                        alert("Your slot was taken by someone else while you were disconnected. Please pick another slot.");
-                        location.reload();
+                        customAlert("Your slot was taken by someone else while you were disconnected. Please pick another slot.", () => {
+                            location.reload();
+                        });
                     } else {
                         showPartError(data.message, 2); 
                         partConn.send({ type: 'check_room' }); // Refresh slots if rejected
@@ -896,13 +1049,15 @@
                 } else if (data.type === 'queue_update') {
                     renderParticipantMiniQueue(data.queue, data.index);
                 } else if (data.type === 'kicked') {
-                    alert("You were disconnected by the host."); 
-                    localStorage.removeItem(PART_SESSION_KEY);
-                    location.reload();
+                    customAlert("You were disconnected by the host.", () => {
+                        localStorage.removeItem(PART_SESSION_KEY);
+                        location.reload();
+                    });
                 } else if (data.type === 'quiz_ended') {
-                    alert("The host has ended the quiz session.");
-                    localStorage.removeItem(PART_SESSION_KEY);
-                    location.reload();
+                    customAlert("The host has ended the quiz session.", () => {
+                        localStorage.removeItem(PART_SESSION_KEY);
+                        location.reload();
+                    });
                 }
             });
 
@@ -951,18 +1106,25 @@
             const btn = document.getElementById('huge-buzzer');
             const text = document.getElementById('buzzer-text');
             const icon = document.getElementById('buzzer-icon');
+            const status = document.getElementById('display-status');
 
             if (locked) {
-                btn.style.backgroundColor = '#1a1a1a';
+                btn.style.backgroundColor = 'rgba(20, 20, 20, 0.6)';
+                btn.style.borderColor = 'rgba(100, 100, 100, 0.3)';
+                btn.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
                 btn.disabled = true;
                 text.innerText = "LOCKED";
-                setParticipantStatus("WAITING FOR HOST TO UNLOCK...");
+                status.innerText = "WAITING FOR HOST TO UNLOCK...";
                 icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z" />`;
+                text.style.transform = "scale(1)";
+                icon.style.transform = "scale(1)";
             } else {
-                btn.style.backgroundColor = partColor;
+                btn.style.backgroundColor = partColor + '30'; // Translucent neon background
+                btn.style.borderColor = partColor;
+                btn.style.boxShadow = `0 10px 40px ${partColor}60, inset 0 0 30px ${partColor}40`;
                 btn.disabled = false;
                 text.innerText = "BUZZ!";
-                setParticipantStatus("SYSTEM LIVE - READY");
+                status.innerText = "SYSTEM LIVE - READY";
                 icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />`;
             }
         }
@@ -992,9 +1154,25 @@
             partConn.send({ type: 'buzz' });
             
             const btn = document.getElementById('huge-buzzer');
-            const originalColor = btn.style.backgroundColor;
-            btn.style.backgroundColor = '#ffffff';
-            setTimeout(() => { btn.style.backgroundColor = originalColor; }, 150);
+            const text = document.getElementById('buzzer-text');
+            const icon = document.getElementById('buzzer-icon');
+            
+            const originalBg = btn.style.backgroundColor;
+            const originalShadow = btn.style.boxShadow;
+            
+            btn.style.backgroundColor = partColor;
+            btn.style.boxShadow = `0 0 60px ${partColor}, inset 0 0 40px rgba(255,255,255,0.8)`;
+            btn.style.transform = 'scale(0.95)';
+            text.style.transform = 'scale(0.9)';
+            icon.style.transform = 'scale(0.9)';
+            
+            setTimeout(() => { 
+                btn.style.backgroundColor = originalBg; 
+                btn.style.boxShadow = originalShadow;
+                btn.style.transform = 'scale(1)';
+                text.style.transform = 'scale(1)';
+                icon.style.transform = 'scale(1)';
+            }, 150);
         }
     </script>
 </body>
