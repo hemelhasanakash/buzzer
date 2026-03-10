@@ -26,7 +26,8 @@
             background-size: 60px 60px;
             color: #ffffff;
             margin: 0;
-            overflow: hidden; 
+            overflow-x: hidden;
+            overflow-y: auto; 
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
         }
@@ -76,7 +77,7 @@
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     </style>
 </head>
-<body class="flex flex-col h-screen w-screen select-none">
+<body class="flex flex-col h-[100dvh] w-screen select-none">
 
     <!-- Unified Audio Element -->
     <audio id="buzzer-sound" src="buzzer.mp3" preload="auto"></audio>
@@ -229,31 +230,31 @@
         </main>
 
         <!-- Host Footer Controls (Fully Responsive Grid/Flex) -->
-        <footer class="w-full px-2 py-3 md:px-8 md:py-4 flex flex-col items-center bg-black bg-opacity-90 border-t border-gray-900 z-10 shrink-0">
-            <div class="w-full grid grid-cols-2 md:flex md:justify-center items-center gap-2 md:gap-6">
+        <footer class="w-full px-2 py-2 md:px-8 md:py-4 flex flex-col items-center bg-black bg-opacity-95 border-t border-gray-900 z-20 shrink-0 mt-auto">
+            <div class="w-full grid grid-cols-2 md:flex md:justify-center items-stretch gap-2 md:gap-6">
                 <!-- Navigation Prev -->
-                <button onclick="goPrev()" class="order-3 md:order-1 w-full md:w-auto px-2 md:px-8 py-3 md:py-4 flex items-center justify-center bg-gray-900 bg-opacity-50 text-gray-400 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-gray-800 hover:text-white transition-all tracking-widest border border-gray-800 uppercase shadow-md">
+                <button onclick="goPrev()" class="order-3 md:order-1 w-full md:w-auto h-11 md:h-14 px-2 md:px-8 flex items-center justify-center bg-gray-900 bg-opacity-50 text-gray-400 font-bold text-[10px] md:text-xl rounded-lg md:rounded-xl hover:bg-gray-800 hover:text-white transition-all tracking-widest border border-gray-800 uppercase shadow-md leading-none">
                     &larr; PREV
                 </button>
                 
                 <!-- Lock -->
-                <button id="lock-btn" onclick="toggleLock()" class="order-1 md:order-2 w-full md:w-auto px-2 md:px-10 py-3 md:py-4 flex items-center justify-center bg-red-950 bg-opacity-30 text-red-500 border border-red-800 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase shadow-md">
+                <button id="lock-btn" onclick="toggleLock()" class="order-1 md:order-2 w-full md:w-auto h-11 md:h-14 px-2 md:px-10 flex items-center justify-center bg-red-950 bg-opacity-30 text-red-500 border border-red-800 font-bold text-[10px] md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase shadow-md leading-none">
                     🔒 LOCKED
                 </button>
                 
                 <!-- Reset -->
-                <button onclick="resetQueue()" class="order-2 md:order-3 w-full md:w-auto px-2 md:px-10 py-3 md:py-4 flex items-center justify-center bg-cyan-950 bg-opacity-30 text-cyan-400 border border-cyan-800 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase shadow-md">
+                <button onclick="resetQueue()" class="order-2 md:order-3 w-full md:w-auto h-11 md:h-14 px-2 md:px-10 flex items-center justify-center bg-cyan-950 bg-opacity-30 text-cyan-400 border border-cyan-800 font-bold text-[10px] md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase shadow-md leading-none">
                     RESET (ESC)
                 </button>
                 
                 <!-- Navigation Next -->
-                <button onclick="goNext()" class="order-4 md:order-4 w-full md:w-auto px-2 md:px-8 py-3 md:py-4 flex items-center justify-center bg-gray-900 bg-opacity-50 text-gray-400 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-gray-800 hover:text-white transition-all tracking-widest border border-gray-800 uppercase shadow-md">
+                <button onclick="goNext()" class="order-4 md:order-4 w-full md:w-auto h-11 md:h-14 px-2 md:px-8 flex items-center justify-center bg-gray-900 bg-opacity-50 text-gray-400 font-bold text-[10px] md:text-xl rounded-lg md:rounded-xl hover:bg-gray-800 hover:text-white transition-all tracking-widest border border-gray-800 uppercase shadow-md leading-none">
                     NEXT &rarr;
                 </button>
             </div>
             
             <!-- Copyright Footer -->
-            <p class="text-[9px] text-gray-600 tracking-[0.2em] font-mono uppercase mt-3 md:mt-4 pointer-events-none">© Created by hha</p>
+            <p class="text-[9px] text-gray-600 tracking-[0.2em] font-mono uppercase mt-2 md:mt-4 pointer-events-none">© Created by hha</p>
         </footer>
     </div>
 
@@ -774,10 +775,10 @@
             const btn = document.getElementById('lock-btn');
             if (hostLocked) {
                 btn.innerHTML = '🔒 LOCKED';
-                btn.className = "order-1 md:order-2 w-full md:w-auto px-2 md:px-10 py-3 md:py-4 flex items-center justify-center bg-red-950 bg-opacity-30 text-red-500 border border-red-800 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase shadow-md";
+                btn.className = "order-1 md:order-2 w-full md:w-auto h-11 md:h-14 px-2 md:px-10 flex items-center justify-center bg-red-950 bg-opacity-30 text-red-500 border border-red-800 font-bold text-[10px] md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase shadow-md leading-none";
             } else {
                 btn.innerHTML = '🔓 UNLOCKED';
-                btn.className = "order-1 md:order-2 w-full md:w-auto px-2 md:px-10 py-3 md:py-4 flex items-center justify-center bg-green-950 bg-opacity-30 text-green-500 border border-green-800 font-bold text-xs md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase shadow-md";
+                btn.className = "order-1 md:order-2 w-full md:w-auto h-11 md:h-14 px-2 md:px-10 flex items-center justify-center bg-green-950 bg-opacity-30 text-green-500 border border-green-800 font-bold text-[10px] md:text-xl rounded-lg md:rounded-xl hover:bg-opacity-50 transition-all tracking-widest uppercase shadow-md leading-none";
             }
             saveHostSession();
             broadcastState(); updateHostUI();
