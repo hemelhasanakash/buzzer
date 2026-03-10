@@ -98,7 +98,7 @@
             <!-- Participant Button -->
             <button onclick="startParticipantMode()" class="flex-1 bg-purple-950 bg-opacity-40 border-2 border-purple-700 hover:bg-purple-900 hover:border-purple-400 rounded-3xl p-6 md:p-10 flex flex-col items-center gap-4 transition-all shadow-[0_0_20px_rgba(168,85,247,0.2)] hover:shadow-[0_0_40px_rgba(168,85,247,0.5)] group transform hover:-translate-y-2">
                 <span class="text-5xl md:text-7xl group-hover:scale-110 transition-transform">📱</span>
-                <span class="text-lg md:text-2xl font-black tracking-widest text-purple-400 text-center">JOIN AS TEAM</span>
+                <span class="text-lg md:text-2xl font-black tracking-widest text-purple-400 text-center">JOIN AS PARTICIPANT</span>
                 <span class="text-xs md:text-sm font-mono text-purple-200 opacity-70 text-center">Connect your phone to a host quiz as a buzzer.</span>
             </button>
         </div>
@@ -320,7 +320,7 @@
             <main class="flex-1 flex flex-col items-center p-6 w-full h-full relative z-0 pt-20 md:pt-24 pb-6 overflow-hidden">
                 <div class="flex-1 w-full flex flex-col items-center justify-center min-h-0 shrink-0">
                     <!-- Dynamically contained futuristic rectangular buzzer -->
-                    <button id="huge-buzzer" onclick="sendBuzz()" class="w-full max-w-sm aspect-[4/5] max-h-[55vh] rounded-[2.5rem] md:rounded-[3rem] border-4 border-white border-opacity-30 bg-gray-900 bg-opacity-40 backdrop-blur-md text-white font-black text-4xl md:text-6xl tracking-widest uppercase flex flex-col items-center justify-center gap-6 transition-all duration-300 mx-auto flex-shrink-0 relative overflow-hidden group shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+                    <button id="huge-buzzer" onclick="sendBuzz()" class="w-full max-w-sm aspect-[4/5] max-h-[55vh] rounded-[2.5rem] md:rounded-[3rem] border-4 border-white bg-gray-900 bg-opacity-40 backdrop-blur-md text-white font-black text-4xl md:text-6xl tracking-widest uppercase flex flex-col items-center justify-center gap-6 transition-all duration-300 mx-auto flex-shrink-0 relative overflow-hidden group shadow-[0_0_20px_rgba(255,255,255,0.4),inset_0_0_20px_rgba(255,255,255,0.2)]">
                         <div class="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"></div>
                         <span id="buzzer-text" class="relative z-10 drop-shadow-lg transition-transform duration-100">LOCKED</span>
                         <svg id="buzzer-icon" xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 md:h-24 md:w-24 opacity-80 relative z-10 drop-shadow-lg transition-transform duration-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -329,7 +329,7 @@
                     </button>
                     
                     <!-- Mini Participant Queue -->
-                    <div class="w-full max-w-sm mt-8 bg-black bg-opacity-60 backdrop-blur-sm border border-gray-800 p-4 rounded-3xl flex flex-col items-center shadow-inner flex-shrink-0">
+                    <div class="w-full max-w-sm mt-8 bg-black bg-opacity-60 backdrop-blur-sm border border-gray-800 p-4 rounded-3xl flex flex-col items-center flex-shrink-0">
                         <p class="text-[9px] md:text-[10px] text-gray-500 tracking-[0.2em] uppercase font-bold mb-3">Live Queue Status</p>
                         <div id="mini-queue-list" class="flex gap-3 overflow-x-auto w-full justify-start md:justify-center min-h-[2.5rem] items-center px-2 py-1">
                             <span class="text-xs text-gray-600 font-mono tracking-widest">EMPTY</span>
@@ -1110,8 +1110,8 @@
 
             if (locked) {
                 btn.style.backgroundColor = 'rgba(20, 20, 20, 0.6)';
-                btn.style.borderColor = 'rgba(100, 100, 100, 0.3)';
-                btn.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
+                btn.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                btn.style.boxShadow = '0 0 15px rgba(255,255,255,0.1), inset 0 0 10px rgba(255,255,255,0.05)';
                 btn.disabled = true;
                 text.innerText = "LOCKED";
                 status.innerText = "WAITING FOR HOST TO UNLOCK...";
@@ -1119,9 +1119,9 @@
                 text.style.transform = "scale(1)";
                 icon.style.transform = "scale(1)";
             } else {
-                btn.style.backgroundColor = partColor + '30'; // Translucent neon background
-                btn.style.borderColor = partColor;
-                btn.style.boxShadow = `0 10px 40px ${partColor}60, inset 0 0 30px ${partColor}40`;
+                btn.style.backgroundColor = partColor + '40'; // Translucent neon background
+                btn.style.borderColor = '#ffffff';
+                btn.style.boxShadow = `0 0 20px rgba(255,255,255,0.6), inset 0 0 15px rgba(255,255,255,0.4), 0 10px 40px ${partColor}80`;
                 btn.disabled = false;
                 text.innerText = "BUZZ!";
                 status.innerText = "SYSTEM LIVE - READY";
@@ -1159,15 +1159,18 @@
             
             const originalBg = btn.style.backgroundColor;
             const originalShadow = btn.style.boxShadow;
+            const originalBorder = btn.style.borderColor;
             
-            btn.style.backgroundColor = partColor;
-            btn.style.boxShadow = `0 0 60px ${partColor}, inset 0 0 40px rgba(255,255,255,0.8)`;
+            btn.style.backgroundColor = '#ffffff';
+            btn.style.borderColor = '#ffffff';
+            btn.style.boxShadow = `0 0 60px rgba(255,255,255,1), inset 0 0 40px rgba(255,255,255,1)`;
             btn.style.transform = 'scale(0.95)';
             text.style.transform = 'scale(0.9)';
             icon.style.transform = 'scale(0.9)';
             
             setTimeout(() => { 
                 btn.style.backgroundColor = originalBg; 
+                btn.style.borderColor = originalBorder;
                 btn.style.boxShadow = originalShadow;
                 btn.style.transform = 'scale(1)';
                 text.style.transform = 'scale(1)';
